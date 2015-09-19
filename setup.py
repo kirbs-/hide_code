@@ -1,10 +1,25 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+from setuptools.command.install import install as _install 
 # To use a consistent encoding
 from codecs import open
 from os import path
+import sys
+import os
 
 here = path.abspath(path.dirname(__file__))
+
+def _post_install(dir):
+    from hide_code import hide_code
+    hide_code.install()
+
+
+class install(_install):
+    def run(self):
+        _install.run(self)
+        self.execute(_post_install, (self.install_lib,), msg="Running post install task")
+
+
 
 # Get the long description from the relevant file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -62,7 +77,8 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+    # packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+    packages={'','hide_code'},
 
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
@@ -74,7 +90,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'hide_code': ['hide_code.js'],
+        'hide_code': ['*.js','*.txt'],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
@@ -86,9 +102,7 @@ setup(
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
-    entry_points={
-        'console_scripts': [
-            'install=hide_code:main',
-        ],
-    },
+    # entry_po
+    # scripts=['hide_code/hide_code.py'],
+    cmdclass={'install': install},
 )
