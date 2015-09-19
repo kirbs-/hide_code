@@ -1,0 +1,9 @@
+
+define([
+'base/js/events'
+], 
+function(events) {
+    events.on('app_initialized.NotebookApp', function(){
+        require(['custom/hide_code']);
+    });
+});
