@@ -35,5 +35,5 @@ def install(nb_path=None, DEBUG=False):
 				print "Configured custom.js to auto-load hide_code.js"
 	else:
 		print 'Unable to install into ' + install_path
-		print 'Directory doesn\' exist.'
+		print 'Directory doesn\'t exist.'
 		print 'Make sure Jupyter is installed.'
