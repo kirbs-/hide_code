@@ -9,7 +9,7 @@ hide_code is an extension for Jupyter/IPython notebooks to selectively hide code
 ###### Hide code enabled
 ![image1.2](/images/1.2.png)
 
-Or customize each cell by selecting "Hide" from the Cell Toolbar dropdown. Then use "Hide Code" and "Hide Prompts" checkboxes to hide the specific cell's code or cell's input/output prompts.
+Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. Then use "Hide Code" and "Hide Prompts" checkboxes to hide the specific cell's code or cell's input/output prompts.
 
 ![image2](/images/2.png)
 
