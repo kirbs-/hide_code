@@ -59,6 +59,24 @@ function ($, celltoolbar){
 		}
 	}
 
+	/**
+	* Add a toolbar button to toggle visibility of all code cells, input/output prompts, and remove any highlighting for the selected cell.
+	**/
+	function addHideCodeButtonToToolbar(){
+		IPython.toolbar.add_buttons_group([
+		    {
+		     'label' : 'Hide/show code',
+		     'icon' : 'fa-code',
+		     'callback' : function() { 
+		        $('.input').toggle(); 
+		        $('.prompt').toggle(); 
+		        $('.ctb_show').toggle();
+		        $('.selected').removeClass('selected').addClass('unselected');
+		      } 
+		    }
+		  ]);
+	}
+
 	var hideCodeCallback = ctb.utils.checkbox_ui_generator(	'Hide Code ', hideCodeSetter, hideCodeGetter);
 
 	var hidePromptCallback = ctb.utils.checkbox_ui_generator('Hide Prompts ', hidePromptSetter,	hidePromptGetter);
@@ -67,6 +85,7 @@ function ($, celltoolbar){
 		ctb.register_callback('hide_code.hideCode', hideCodeCallback);
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
         ctb.register_preset('Hide',['hide_code.hidePrompts','hide_code.hideCode']);
+        addHideCodeButtonToToolbar();
 	}
 	
 	setup();
