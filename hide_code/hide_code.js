@@ -84,10 +84,10 @@ function ($, celltoolbar){
 	function setup(){
 		ctb.register_callback('hide_code.hideCode', hideCodeCallback);
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
-        ctb.register_preset('Hide',['hide_code.hidePrompts','hide_code.hideCode']);
+        ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode']);
         addHideCodeButtonToToolbar();
 	}
 	
 	setup();
-	console.log('setup complete');
+	console.log('hide_code setup complete');
 });
