@@ -1,4 +1,4 @@
-# Hide_code 0.1.3
+# Hide_code 0.1
 
 ## Introduction
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for exporting or presenting with a single click by pressing ![hide_code toggle](/images/button.png)
@@ -26,7 +26,6 @@ Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. 
 1. Download and unzip this repository.
 2. Change to unzipped directory 
 3. `python setup.py install`
-
 
 ## Requirements
 * Jupyter notebook 4+
