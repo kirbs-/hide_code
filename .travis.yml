@@ -13,4 +13,5 @@ python:
 install:
   - pip install jupyter
 # command to run tests
-# script: nosetests
+script: 
+  - python -c 'import hide_code.hide_code as hc; hc.install()'
