@@ -1,4 +1,5 @@
-# Hide_code 0.1.3
+# Hide_code
+![PyPI version](https://badge.fury.io/py/hide_code.svg) ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 ## Introduction
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for exporting or presenting with a single click by pressing ![hide_code toggle](/images/button.png)
@@ -20,13 +21,21 @@ Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. 
 ![image3.2](/images/3.2.png)
 
 ## Installation
+### Via pip
 `pip install hide_code`
 
-### Manual installation
-1. Download and unzip this repository.
-2. Change to unzipped directory 
-3. `python setup.py install`
+### Via setuptools
+1. Download and unzip this repository. 
+2. Change to unzipped directory.
+3. Execute ```python setup.py install```
 
+### Installation Troubleshooting
+If installation complains the directory doesn't exist, you're Jupyter/IPython installation probably isn't in one of the usual places. Locate Jupyter's configuration directory, then use code below to install in a non-standard directory.
+```python
+import hide_code.hide_code as hc
+dir = "<full path to Jupyter config directory>"
+hc.install(dir)
+```
 
 ## Requirements
 * Jupyter notebook 4+
