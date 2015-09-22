@@ -10,7 +10,7 @@ def __main__():
 
 def install(nb_path=None, DEBUG=False):
 	install_path = None
-	print('Starting hide_code.js install')
+	print('Starting hide_code.js install...')
 	current_dir = path.abspath(path.dirname(__file__))
 	config_dirs = j_path.jupyter_config_path()
 	site_packages_path = path.join(os.__file__[:-7], "site-packages")
@@ -42,10 +42,25 @@ def install(nb_path=None, DEBUG=False):
 		print('Copying hide_code.js to ' + install_path) 
 
 		# add require to end of custom.js to auto-load on notebook startup
-		with open(path.join(install_path, "custom.js"), 'a') as customJS:
+		print("Attempting to configure custom.js to auto-load hide__code.js...")
+		try:
 			with open(path.join(current_dir, "auto-load.txt")) as auto:
-				customJS.write(auto.read())
-				print("Configured custom.js to auto-load hide_code.js")
+				auto_load_txt = auto.read();
+				auto_loaded = False
+
+				# check if auto-load.txt is already in custom.js
+				with open(path.join(install_path, "custom.js"), 'r') as customJS:
+					if auto_load_txt in customJS.read():
+						auto_loaded = True
+						print("Custom.js already configured to auto-load hide_code.js.")
+
+
+				if not auto_loaded:  # append auto load require to end of custom.js
+					with open(path.join(install_path, "custom.js"), 'a') as customJS:
+						customJS.write(auto_load_txt)
+						print("Configured custom.js to auto-load hide_code.js.")
+		except:
+			print("Custom.js not in custom directory.")
 	else:
 		print('Unable to install into ' + install_path)
 		print('Directory doesn\'t exist.')
