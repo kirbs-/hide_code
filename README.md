@@ -1,5 +1,7 @@
 # Hide_code
-![PyPI version](https://badge.fury.io/py/hide_code.svg) ![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg)
+![PyPI version](https://badge.fury.io/py/hide_code.svg) ![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg) 
+
+Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
 ## Introduction
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for exporting or presenting with a single click by pressing ![hide_code toggle](/images/button.png)
