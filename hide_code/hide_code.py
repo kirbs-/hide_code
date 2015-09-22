@@ -16,12 +16,14 @@ def install(nb_path=None, DEBUG=False):
 	site_packages_path = path.join(os.__file__[:-7], "site-packages")
 
 	# check for config directory with a "custom" folder
+	# TODO update this logic to check if custom.js file exists
 	for dir in config_dirs:
-		if path.isdir(path.join(dir, "custom")):
-			install_path = path.join(dir, "custom")
+		custom_dir = path.join(dir, "custom")
+		if path.isdir(custom_dir):
+			install_path = custom_dir
 			break
 
-	# last ditch effort incase jupyter config isn't 		
+	# last ditch effort in case jupyter config directories don't contain custom/custom.js		
 	if install_path == None:	
 		print("No config directories contain \"custom\" folder. Trying site-packages...")	
 		install_path = path.join(site_packages_path, "notebook/static/custom")
@@ -29,7 +31,7 @@ def install(nb_path=None, DEBUG=False):
 
 	if nb_path != None:
 		install_path = nb_path
-		print("Using " + install_path)
+		print("Using argument supplied path: " + install_path)
 
 	if DEBUG:
 		print(install_path)
