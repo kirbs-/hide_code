@@ -13,7 +13,7 @@ def install(nb_path=None, DEBUG=False):
 	print('Starting hide_code.js install...')
 	current_dir = path.abspath(path.dirname(__file__))
 	config_dirs = j_path.jupyter_config_path()
-	site_packages_path = path.join(os.__file__[:-7], "site-packages")
+	site_packages_path = get_site_package_dir()
 
 	# check for config directory with a "custom" folder
 	# TODO update this logic to check if custom.js file exists
@@ -65,3 +65,10 @@ def install(nb_path=None, DEBUG=False):
 		print('Unable to install into ' + install_path)
 		print('Directory doesn\'t exist.')
 		print('Make sure Jupyter is installed.')
+
+def get_site_package_dir():
+	os_file = os.__file__
+	if os_file.endswith('.pyc'):
+		return path.join(os_file[:-7], "site-packages")
+	else:
+		return path.join(os_file[:-6], "site-packages")
