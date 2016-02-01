@@ -43,7 +43,7 @@ function ($, celltoolbar){
 
 	function toggleHideCode(cell){
 		var c = $(cell.element);
-		if (cell.metadata.hideCode && cell.classs_config.classname != 'MarkdownCell'){
+		if (cell.metadata.hideCode){
 			c.find('.input_area').hide(); 
 		} else {
 			c.find('.input_area').show(); 
