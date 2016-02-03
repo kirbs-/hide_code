@@ -22,7 +22,7 @@ class install(_install):
 
 
 # Get the long description from the relevant file
-with open('hide_code/README.txt', encoding='utf-8') as f:
+with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
