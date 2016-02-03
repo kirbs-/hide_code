@@ -1,32 +1,42 @@
 Hide_code
 =========
-![PyPI version](https://badge.fury.io/py/hide_code.svg) ![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg) 
 
-Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
+.. image:: https://img.shields.io/github/license/mashape/apistatus.svg
+
+Release build
+
+.. image:: https://travis-ci.org/kirbs-/hide_code.svg?branch=master
+
+Development build
+
+.. image:: https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
 Introduction
 ============
-hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for exporting or presenting with a single click by pressing ![hide_code toggle](/images/button.png)
+hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for exporting or presenting with a single click by pressing 
+
+.. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/button.png
 
 Normal
 ------
-![image1.1](/images/1.1.png)
+.. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/1.1.png
+   :scale: 50 %
 
 Hide code enabled
 -----------------
-![image1.2](/images/1.2.png)
+.. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/1.2.png
 
 Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. Then use "Hide Code" and "Hide Prompts" checkboxes to hide the specific cell's code or cell's input/output prompts.
 
-![image2](/images/2.png)
+.. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/2.png
 
 Normal
 ------
-![image3.q](/images/3.1.png)
+.. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/3.1.png
 
 Hide code enabled
 -----------------
-![image3.2](/images/3.2.png)
+.. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/3.2.png
 
 Installation
 ============
