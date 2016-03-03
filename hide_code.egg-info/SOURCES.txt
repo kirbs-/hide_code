@@ -1,0 +1,13 @@
+README.rst
+setup.py
+hide_code/LICENSE.txt
+hide_code/__init__.py
+hide_code/auto-load.txt
+hide_code/hide_code.js
+hide_code/hide_code.py
+hide_code.egg-info/.DS_Store
+hide_code.egg-info/PKG-INFO
+hide_code.egg-info/SOURCES.txt
+hide_code.egg-info/dependency_links.txt
+hide_code.egg-info/requires.txt
+hide_code.egg-info/top_level.txt
