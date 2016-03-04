@@ -43,18 +43,18 @@ function ($, celltoolbar){
 
 	function toggleHideCode(cell){
 		var c = $(cell.element);
-		if (cell.metadata.hideCode && cell.classs_config.classname != 'MarkdownCell'){
+		if (cell.metadata.hideCode && cell.class_config.classname != 'MarkdownCell'){
 			c.find('.input_area').hide(); 
-		} else {
+		} else if(cell.class_config.classname != 'MarkdownCell') {
 			c.find('.input_area').show(); 
 		}
 	}
 
 	function toggleHidePrompt(cell){
 		var c = $(cell.element);
-		if (cell.metadata.hidePrompt){
+		if (cell.metadata.hidePrompt && cell.class_config.classname != 'MarkdownCell'){
 			c.find('.prompt').css('visibility','hidden');
-		} else {
+		} else if(cell.class_config.classname != 'MarkdownCell') {
 			c.find('.prompt').css('visibility','visible'); 
 		}
 	}
@@ -67,10 +67,25 @@ function ($, celltoolbar){
 		    {
 		     'label' : 'Hide/show code',
 		     'icon' : 'fa-code',
-		     'callback' : function() { 
+		     'callback' : function() { // toggling visibility is adding display: blcok to the element. Causing celltoolbar = None not work.
 		        $('.input').toggle(); 
 		        $('.prompt').toggle(); 
-		        $('.ctb_show').toggle();
+		        var ctb = $('.ctb_hideshow');
+		        if(ctb.hasClass('ctb_show')) {
+		        	ctb.removeClass('ctb_show');
+		        } else {
+		        	ctb.addClass('ctb_show');
+		        }
+
+		        var ctb = $('.celltoolbar');
+		        if(ctb.hasClass('invisible')){
+		        	console.log('visible');
+		        	ctb.removeClass('invisible');
+		        } else {
+		        	console.log('invisible');
+		        	ctb.addClass('invisible');
+		        }
+		        // $('.celltoolbar').toggle();
 		        $('.selected').removeClass('selected').addClass('unselected');
 		      } 
 		    }
