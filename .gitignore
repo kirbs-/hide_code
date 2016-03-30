@@ -1,1 +1,8 @@
 .DS_Store
+/dist
+/build
+dev-copy.py
+/hide_code/*.pyc
+hide_code.egg*
+hide_code.sublime-project
+hide_code.sublime-workspace

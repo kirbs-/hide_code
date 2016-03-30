@@ -31,9 +31,9 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.6',
+    version='0.2.0',
 
-    description='A Jupyter notebook extension to hide code.',
+    description='A Jupyter notebook extension to hide code and prompts.',
     long_description=long_description,
 
     # The project's main homepage.
@@ -90,7 +90,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'hide_code': ['*.js','*.txt'],
+        'hide_code': ['*.js','*.txt', os.path.join('Templates', '*')],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
@@ -105,4 +105,10 @@ setup(
     # entry_po
     # scripts=['hide_code/hide_code.py'],
     cmdclass={'install': install},
+
+    entry_points={
+        'nbconvert.exporters': [
+            'simple = hide_code:HideCodeHTMLExporter',
+        ],
+    }
 )
