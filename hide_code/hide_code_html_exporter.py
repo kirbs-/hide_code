@@ -7,7 +7,7 @@ from traitlets.log import get_logger
 
 class HideCodeHTMLExporter(HTMLExporter):
 
-	def __init__(self, config, **kw):
+	def __init__(self, config=None, **kw):
 		# self.register_preprocessor('hide_code.HideCodePreprocessor', True)
 		super(HideCodeHTMLExporter, self).__init__(config, **kw)
 		self.preprocessors = ['hide_code.HideCodePreprocessor']

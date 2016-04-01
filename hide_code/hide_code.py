@@ -2,10 +2,32 @@ import os
 from os import path
 import shutil
 import jupyter_core.paths as j_path
+from notebook.utils import url_path_join
+from notebook.base.handlers import IPythonHandler
+import nbformat
+from traitlets.config import Config
+from .hide_code_html_exporter import HideCodeHTMLExporter
+
+notebook_dir = ""
+
+class HideCodeHTMLExportHandler(IPythonHandler):
+    def get(self, nb_name):
+    	with open(path.join(notebook_dir, nb_name)) as f:
+    		nb = nbformat.reads(f.read(), as_version=4)
+    		exporter = HideCodeHTMLExporter()
+    		output_html, resources = exporter.from_notebook_node(nb)
+        self.finish(output_html)
 
 
 def __main__():
 	install()
+
+def load_jupyter_server_extension(nb_app):
+    web_app = nb_app.web_app
+    notebook_dir = nb_app.notebook_dir
+    host_pattern = '.*$'
+    route_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export')
+    web_app.add_handlers(host_pattern, [(route_pattern, HideCodeHTMLExportHandler)])
 
 
 def install(nb_path=None, DEBUG=False):

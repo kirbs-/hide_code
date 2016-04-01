@@ -88,6 +88,13 @@ function ($, celltoolbar){
 		        // $('.celltoolbar').toggle();
 		        $('.selected').removeClass('selected').addClass('unselected');
 		      } 
+		    },
+		    {
+		    	'label' : 'Export',
+		    	'icon' : 'fa-share-square-o',
+		    	'callback' : function (){
+		    		window.open(document.URL + "/export")
+		    	}
 		    }
 		  ]);
 	}
