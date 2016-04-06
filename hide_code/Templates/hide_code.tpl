@@ -10,7 +10,7 @@ div.output_subarea {
 {%- endblock html_head -%}
 
 {%- block input -%}
-	{%- if cell.metadata.hideCode-%}
+	{%- if cell.metadata.hideCode -%}
 		<div></div>
 	{%- else -%}
 		{{ super() }}

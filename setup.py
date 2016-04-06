@@ -108,7 +108,8 @@ setup(
 
     entry_points={
         'nbconvert.exporters': [
-            'simple = hide_code:HideCodeHTMLExporter',
+            'hide_code_html = hide_code:HideCodeHTMLExporter',
+            'hide_code_pdf = hide_code:HideCodePDFExporter',
         ],
     }
 )
