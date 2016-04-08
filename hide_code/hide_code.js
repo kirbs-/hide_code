@@ -90,10 +90,17 @@ function ($, celltoolbar){
 		      } 
 		    },
 		    {
-		    	'label' : 'Export',
+		    	'label' : 'Export html',
 		    	'icon' : 'fa-share-square-o',
 		    	'callback' : function (){
-		    		window.open(document.URL + "/export")
+		    		window.open(document.URL + "/export/html")
+		    	}
+		    },
+		    {
+		    	'label' : 'Export PDF',
+		    	'icon' : 'fa-share-square-o',
+		    	'callback' : function (){
+		    		window.open(document.URL + "/export/pdf")
 		    	}
 		    }
 		  ]);

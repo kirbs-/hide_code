@@ -7,8 +7,10 @@ from notebook.base.handlers import IPythonHandler
 import nbformat
 from traitlets.config import Config
 from .hide_code_html_exporter import HideCodeHTMLExporter
+import pdfkit
 
 notebook_dir = ""
+base_url = ""
 
 class HideCodeHTMLExportHandler(IPythonHandler):
     def get(self, nb_name):
@@ -18,6 +20,15 @@ class HideCodeHTMLExportHandler(IPythonHandler):
     		output_html, resources = exporter.from_notebook_node(nb)
         self.finish(output_html)
 
+class HideCodePDFExportHandler(IPythonHandler):
+	def get(self, nb_name):
+		with open(path.join(notebook_dir, nb_name)) as f:
+			nb = nbformat.reads(f.read(), as_version=4)
+			exporter = HideCodeHTMLExporter()
+			output_html, resources = exporter.from_notebook_node(nb)
+			pdfkit.from_string(output_html, nb_name + '.pdf')
+		self.finish()
+
 
 def __main__():
 	install()
@@ -26,8 +37,11 @@ def load_jupyter_server_extension(nb_app):
     web_app = nb_app.web_app
     notebook_dir = nb_app.notebook_dir
     host_pattern = '.*$'
-    route_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export')
-    web_app.add_handlers(host_pattern, [(route_pattern, HideCodeHTMLExportHandler)])
+    route_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/html')
+    route_pattern2 = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/pdf')
+
+    base_url = web_app.settings['base_url']
+    web_app.add_handlers(host_pattern, [(route_pattern, HideCodeHTMLExportHandler), (route_pattern2, HideCodePDFExportHandler)])
 
 
 def install(nb_path=None, DEBUG=False):
