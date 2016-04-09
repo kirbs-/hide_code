@@ -44,7 +44,7 @@ def load_jupyter_server_extension(nb_app):
     web_app.add_handlers(host_pattern, [(route_pattern, HideCodeHTMLExportHandler), (route_pattern2, HideCodePDFExportHandler)])
 
 
-def install(nb_path=None, DEBUG=False):
+def install(nb_path=None, server_config=True, DEBUG=False):
 	install_path = None
 	print('Starting hide_code.js install...')
 	current_dir = path.abspath(path.dirname(__file__))
@@ -73,7 +73,7 @@ def install(nb_path=None, DEBUG=False):
 		print(install_path)
 
 	# copy js into static/custom directory in Jupyter/iPython directory
-	if(path.isdir(install_path)):
+	if path.isdir(install_path):
 		shutil.copyfile(path.join(current_dir, "hide_code.js"), path.join(install_path, "hide_code.js"))
 		print('Copying hide_code.js to ' + install_path) 
 
@@ -101,6 +101,29 @@ def install(nb_path=None, DEBUG=False):
 		print('Unable to install into ' + install_path)
 		print('Directory doesn\'t exist.')
 		print('Make sure Jupyter is installed.')
+
+	if server_config:
+		print("Attempting to configure default profile to auto-load hide_code export handlers.")
+		try:
+			with open(path.join(current_dir, "auto-load-server-extension.txt"), 'r') as auto:
+				auto_load_ext_text = auto.read();
+				auto_loaded = False
+				config_dir = j_path.jupyter_config_dir()
+
+				with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'r') as nb_config:
+					if auto_load_ext_text in nb_config.read():
+						auto_loaded = True
+						print("jupyter_notebook_config.py already configured to auto-load hide_code export handlers.")
+
+				if not auto_loaded:
+					with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'a') as ipython_config:
+						ipython_config.write(auto_load_ext_text)
+						print('Configured default_profile to auto-load hide_code server extensions.')
+		except:
+			print('Unable to install server extension into ' + j_path.jupyter_config_path(),)
+			print('jupyter_notebook_config.py may not exist.')
+			print('Try running \'jupyter notebook --generate-config\' and reinstall hide_code.')
+
 
 def get_site_package_dir():
 	os_file = os.__file__

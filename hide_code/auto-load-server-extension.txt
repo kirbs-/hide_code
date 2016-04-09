@@ -1,0 +1,2 @@
+
+c.NotebookApp.server_extensions = ['hide_code.hide_code']
