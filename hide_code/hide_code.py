@@ -8,6 +8,7 @@ import nbformat
 from traitlets.config import Config
 from .hide_code_html_exporter import HideCodeHTMLExporter
 import pdfkit
+from notebook.services.config import ConfigManager
 
 notebook_dir = ""
 base_url = ""
@@ -105,24 +106,38 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 	if server_config:
 		print("Attempting to configure default profile to auto-load hide_code export handlers.")
 		try:
-			with open(path.join(current_dir, "auto-load-server-extension.txt"), 'r') as auto:
-				auto_load_ext_text = auto.read();
-				auto_loaded = False
-				config_dir = j_path.jupyter_config_dir()
+			# Activate the Python server extension
+			server_cm = ConfigManager(config_dir=j_path.jupyter_config_dir())
+			cfg = server_cm.get('jupyter_notebook_config')
+			server_extensions = (cfg.setdefault('NotebookApp', {})
+				.setdefault('server_extensions', [])
+				)
+			extension = 'hide_code.hide_code'
+			if extension not in server_extensions:
+				cfg['NotebookApp']['server_extensions'] += [extension]
+				server_cm.update('jupyter_notebook_config', cfg)
+				print('Configured jupyter to auto-load hide_code server extensions.')
+			else:
+				print("jupyter_notebook_config already configured to auto-load export handlers.")
 
-				with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'r') as nb_config:
-					if auto_load_ext_text in nb_config.read():
-						auto_loaded = True
-						print("jupyter_notebook_config.py already configured to auto-load hide_code export handlers.")
+			# with open(path.join(current_dir, "auto-load-server-extension.txt"), 'r') as auto:
+			# 	auto_load_ext_text = auto.read();
+			# 	auto_loaded = False
+			# 	config_dir = j_path.jupyter_config_dir()
 
-				if not auto_loaded:
-					with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'a') as ipython_config:
-						ipython_config.write(auto_load_ext_text)
-						print('Configured default_profile to auto-load hide_code server extensions.')
+			# 	with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'r') as nb_config:
+			# 		if auto_load_ext_text in nb_config.read():
+			# 			auto_loaded = True
+			# 			print("jupyter_notebook_config.py already configured to auto-load hide_code export handlers.")
+
+			# 	if not auto_loaded:
+			# 		with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'a') as ipython_config:
+			# 			ipython_config.write(auto_load_ext_text)
+			# 			print('Configured default_profile to auto-load hide_code server extensions.')
 		except:
-			print('Unable to install server extension into ' + j_path.jupyter_config_path(),)
-			print('jupyter_notebook_config.py may not exist.')
-			print('Try running \'jupyter notebook --generate-config\' and reinstall hide_code.')
+			print('Unable to install server extension.') # + j_path.jupyter_config_path(),)
+			# print('jupyter_notebook_config.py may not exist.')
+			# print('Try running \'jupyter notebook --generate-config\' and reinstall hide_code.')
 
 
 def get_site_package_dir():

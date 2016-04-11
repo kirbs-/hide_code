@@ -15,9 +15,18 @@ def _post_install(dir):
 
 
 class install(_install):
+    description = 'Installs hide_code.js and hide_code export handlers server extension.'
+    # user_options = [{'auto-load=', None, 'Do not auto-load server extensions.'}]
+
+    # def initialize_options(self):
+    #     self.auto_load = True
+
+    # def finalize_options(self):
+    #     _install.finalize_options()
+
     def run(self):
         _install.run(self)
-        self.execute(_post_install, (self.install_lib,), msg="Running post install task...")
+        self.execute(_post_install, (self.install_lib, ), msg="Running post install task...")
 
 
 

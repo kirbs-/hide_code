@@ -90,14 +90,14 @@ function ($, celltoolbar){
 		      } 
 		    },
 		    {
-		    	'label' : 'Export html',
+		    	'label' : 'Export to HTML',
 		    	'icon' : 'fa-file-text-o',
 		    	'callback' : function (){
 		    		window.open(document.URL + "/export/html")
 		    	}
 		    },
 		    {
-		    	'label' : 'Export PDF',
+		    	'label' : 'Export to PDF',
 		    	'icon' : 'fa-file-pdf-o',
 		    	'callback' : function (){
 		    		window.open(document.URL + "/export/pdf")
