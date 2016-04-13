@@ -13,8 +13,8 @@ class HideCodePDFExporter(PDFExporter):
 		self.preprocessors = ['hide_code.HideCodePreprocessor']
 		self._init_preprocessors()
 
-	# def _default_template_path_default(self):
-	# 	return  "/Users/ckirby/.virtualenvs/hide_code/lib/python2.7/site-packages/hide_code/Templates"
+		# def _default_template_path_default(self):
+		# 	return  "/Users/ckirby/.virtualenvs/hide_code/lib/python2.7/site-packages/hide_code/Templates"
 
 	def _template_file_default(self):
 		return 'hide_code_article'

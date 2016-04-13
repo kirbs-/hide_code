@@ -14,12 +14,12 @@ notebook_dir = ""
 base_url = ""
 
 class HideCodeHTMLExportHandler(IPythonHandler):
-    def get(self, nb_name):
-    	with open(path.join(notebook_dir, nb_name)) as f:
-    		nb = nbformat.reads(f.read(), as_version=4)
-    		exporter = HideCodeHTMLExporter()
-    		output_html, resources = exporter.from_notebook_node(nb)
-        self.finish(output_html)
+	def get(self, nb_name):
+		with open(path.join(notebook_dir, nb_name)) as f:
+			nb = nbformat.reads(f.read(), as_version=4)
+			exporter = HideCodeHTMLExporter()
+			output_html, resources = exporter.from_notebook_node(nb)
+		self.finish(output_html)
 
 class HideCodePDFExportHandler(IPythonHandler):
 	def get(self, nb_name):

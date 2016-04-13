@@ -2,6 +2,7 @@
 /dist
 /build
 dev-copy.py
+/hide_code/__pycache__/*
 /hide_code/*.pyc
 hide_code.egg*
 hide_code.sublime-project
