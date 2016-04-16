@@ -3,7 +3,7 @@
 
 Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
-## hide_code now supports HTML & PDF exporting!
+### hide_code now supports HTML & PDF exporting!
 
 ## Introduction
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for presenting with a single click by pressing ![hide_code toggle](/images/button.png)
@@ -31,7 +31,7 @@ This feature continues to evolve. Items on the road map incude:
 * saving to a different file loaction.
 * saving as a different file name.
 * support for custom CSS.
-* single click exporting with all code and prompts hidden (similar to how the toolbar button.
+* single click exporting with all code and prompts hidden (similar to how the toolbar button).
 
 ### Via notebook
 To export via HTML or PDF button ![image4.1](/images/4.1.png) you must set each cell's hide prompt and hide code selection. 
