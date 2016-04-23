@@ -54,7 +54,7 @@ Hide code enabled
 
 Exporting
 =========
-Exported file output is saved in Jupyter's current working directory with the notebook's file name + '.html' or '.pdf'. **Exporting to PDF via notebook requires** wkhtmltopdf_.
+Exporting respects hide code/prmpt cell selections only. Output is saved in Jupyter's current working directory with the notebook's file name + '.html' or '.pdf'.**Exporting to PDF via notebook requires** wkhtmltopdf_.
 
 .. _wkhtmltopdf: http://wkhtmltopdf.org
 
@@ -67,7 +67,7 @@ This feature continues to evolve. Items on the road map incude:
 
 Via notebook
 ------------
-To export via HTML or PDF button you must set each cell's hide prompt and hide code selection. 
+To export via HTML or PDF simply click on the respective button.
 
 .. image:: https://raw.githubusercontent.com/kirbs-/hide_code/dev/images/4.1.png 
 

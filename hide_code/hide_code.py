@@ -19,7 +19,12 @@ class HideCodeHTMLExportHandler(IPythonHandler):
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
 			output_html, resources = exporter.from_notebook_node(nb)
-		self.finish(output_html)
+		self.set_header('Content-Type', 'text/html')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.html')
+		self.flush()
+		# output = ' '.join(format(ord(x), 'b') for x in output_html)
+		self.write(output_html)
+		self.finish()
 
 class HideCodePDFExportHandler(IPythonHandler):
 	def get(self, nb_name):
@@ -27,7 +32,11 @@ class HideCodePDFExportHandler(IPythonHandler):
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
 			output_html, resources = exporter.from_notebook_node(nb)
-			pdfkit.from_string(output_html, nb_name + '.pdf')
+			output = pdfkit.from_string(output_html, False)
+		self.set_header('Content-Type', 'application/pdf')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.pdf')
+		self.flush()
+		self.write(output)
 		self.finish()
 
 
@@ -139,6 +148,8 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 			# print('jupyter_notebook_config.py may not exist.')
 			# print('Try running \'jupyter notebook --generate-config\' and reinstall hide_code.')
 
+def notebook_name(nb_name):
+	return nb_name[:-6]
 
 def get_site_package_dir():
 	os_file = os.__file__

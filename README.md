@@ -25,7 +25,7 @@ Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. 
 ![image3.2](/images/3.2.png)
 
 ## Exporting
-Exported file output is saved in Jupyter's current working directory with the notebook's file name + '.html' or '.pdf'. **Exporting to PDF via notebook requires [wkhtmltopdf](http://wkhtmltopdf.org/)!** 
+Exporting respects hide code/prmpt cell selections only. Output is saved in Jupyter's current working directory with the notebook's file name + '.html' or '.pdf'. **Exporting to PDF via notebook requires [wkhtmltopdf](http://wkhtmltopdf.org/)!** 
 
 This feature continues to evolve. Items on the road map incude:
 * saving to a different file loaction.
@@ -34,7 +34,8 @@ This feature continues to evolve. Items on the road map incude:
 * single click exporting with all code and prompts hidden (similar to how the toolbar button).
 
 ### Via notebook
-To export via HTML or PDF button ![image4.1](/images/4.1.png) you must set each cell's hide prompt and hide code selection. 
+To export via HTML or PDF simply click on the respective button.
+![image4.1](/images/4.1.png)
 
 ### Via nbconvert command line
 To export via nbconvert command line, nbconvert 4.2 or later is required. Hide_code adds two export options to nbconvert, hide_code_html and hide_code_pdf. 
@@ -64,6 +65,6 @@ hc.install(dir)
 
 ## Requirements
 * Jupyter notebook 4.x+
-* Jupyter nbconvert 4.2+ if using nbconvert command line
+* Jupyter nbconvert 4.2+ if using nbconvert command line exporting
 * pdfkit & [wkhtmltopdf](http://wkhtmltopdf.org/)
-* Python 2.7+ if installing with pip
+* Python 2.7 or 3.3+
