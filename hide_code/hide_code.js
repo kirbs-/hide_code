@@ -88,6 +88,20 @@ function ($, celltoolbar){
 		        // $('.celltoolbar').toggle();
 		        $('.selected').removeClass('selected').addClass('unselected');
 		      } 
+		    },
+		    {
+		    	'label' : 'Export to HTML',
+		    	'icon' : 'fa-file-text-o',
+		    	'callback' : function (){
+		    		window.location=document.URL + "/export/html"
+		    	}
+		    },
+		    {
+		    	'label' : 'Export to PDF',
+		    	'icon' : 'fa-file-pdf-o',
+		    	'callback' : function (){
+		    		window.location=document.URL + "/export/pdf"
+		    	}
 		    }
 		  ]);
 	}
@@ -101,6 +115,10 @@ function ($, celltoolbar){
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
         ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode']);
         addHideCodeButtonToToolbar();
+        $.each(Jupyter.notebook.get_cells(), function(index, cell){
+        	toggleHidePrompt(cell);
+        	toggleHideCode(cell);
+        });
 	}
 	
 	setup();

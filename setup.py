@@ -15,9 +15,18 @@ def _post_install(dir):
 
 
 class install(_install):
+    description = 'Installs hide_code.js and hide_code export handlers server extension.'
+    # user_options = [{'auto-load=', None, 'Do not auto-load server extensions.'}]
+
+    # def initialize_options(self):
+    #     self.auto_load = True
+
+    # def finalize_options(self):
+    #     _install.finalize_options()
+
     def run(self):
         _install.run(self)
-        self.execute(_post_install, (self.install_lib,), msg="Running post install task...")
+        self.execute(_post_install, (self.install_lib, ), msg="Running post install task...")
 
 
 
@@ -31,9 +40,9 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.6',
+    version='0.2.0',
 
-    description='A Jupyter notebook extension to hide code.',
+    description='A Jupyter notebook extension to hide code and prompts.',
     long_description=long_description,
 
     # The project's main homepage.
@@ -63,13 +72,10 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
 
     # What does your project relate to?
@@ -84,13 +90,13 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['jupyter'],
+    install_requires=['jupyter', 'pdfkit'],
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'hide_code': ['*.js','*.txt'],
+        'hide_code': ['*.js','*.txt', os.path.join('Templates', '*')],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
@@ -105,4 +111,11 @@ setup(
     # entry_po
     # scripts=['hide_code/hide_code.py'],
     cmdclass={'install': install},
+
+    entry_points={
+        'nbconvert.exporters': [
+            'hide_code_html = hide_code:HideCodeHTMLExporter',
+            'hide_code_pdf = hide_code:HideCodePDFExporter',
+        ],
+    }
 )
