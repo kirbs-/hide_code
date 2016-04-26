@@ -29,15 +29,25 @@
 %===============================================================================
 
 ((* block execute_result scoped *))
+((*- if cell.metadata.hideOutput -*))
+((*- else -*))
     ((*- for type in output.data | filter_data_type -*))
-        ((*- if type in ['text/plain']*))
+        ((*- if type in ['text/plain'] -*))
             ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor') )))
-        ((* else -*))
+        ((*- else -*))
 \texttt{\color{outcolor}Out[{\color{outcolor}((( cell.execution_count )))}]:}((( super() )))
         ((*- endif -*))
     ((*- endfor -*))
+((*- endif -*))
 ((* endblock execute_result *))
 
+
+((* block stream *))
+((*- if cell.metadata.hideOutput -*))
+((*- else -*))
+    ((( super() )))
+((*- endif -*))
+((* endblock stream *))
 
 %==============================================================================
 % Support Macros
@@ -53,7 +63,7 @@
     ((*- endif -*))
     ((*- set indention =  " " * (execution_count | length + 7) -*))
 
-((*- if cell.metadata.hidePrompt and cell.metadata.hideCode-*))
+((*- if cell.metadata.hidePrompt and cell.metadata.hideCode -*))
 \begin{Verbatim}[commandchars=\\\{\}]
 
 \end{Verbatim}
