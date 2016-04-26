@@ -93,7 +93,8 @@ function ($, celltoolbar){
 		    	'label' : 'Export to HTML',
 		    	'icon' : 'fa-file-text-o',
 		    	'callback' : function (){
-		    		window.location=document.URL + "/export/html"
+		    		window.location=document.URL + "/export/html";
+		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    },
 		    {
