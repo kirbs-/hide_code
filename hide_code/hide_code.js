@@ -105,7 +105,7 @@ function ($, celltoolbar){
 		    },
 		    {
 		    	'label' : 'Export to PDF via Latex',
-		    	'icon' : 'fa-file-pdf-o',
+		    	'icon' : 'fa-file-o',
 		    	'callback' : function (){
 		    		window.location=document.URL + "/export/latexpdf"
 		    	}
