@@ -97,10 +97,17 @@ function ($, celltoolbar){
 		    	}
 		    },
 		    {
-		    	'label' : 'Export to PDF',
+		    	'label' : 'Export to PDF via HTML',
 		    	'icon' : 'fa-file-pdf-o',
 		    	'callback' : function (){
 		    		window.location=document.URL + "/export/pdf"
+		    	}
+		    },
+		    {
+		    	'label' : 'Export to PDF via Latex',
+		    	'icon' : 'fa-file-pdf-o',
+		    	'callback' : function (){
+		    		window.location=document.URL + "/export/latexpdf"
 		    	}
 		    }
 		  ]);

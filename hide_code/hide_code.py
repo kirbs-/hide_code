@@ -7,6 +7,7 @@ from notebook.base.handlers import IPythonHandler
 import nbformat
 from traitlets.config import Config
 from .hide_code_html_exporter import HideCodeHTMLExporter
+from .hide_code_pdf_exporter import HideCodePDFExporter
 import pdfkit
 from notebook.services.config import ConfigManager
 
@@ -39,6 +40,20 @@ class HideCodePDFExportHandler(IPythonHandler):
 		self.write(output)
 		self.finish()
 
+class HideCodeLatexPDFExportHandler(IPythonHandler):
+	def get(self, nb_name):
+		self.log.info("hide_code: Starting Latex PDF export for {}".format(nb_name))
+		with open(path.join(notebook_dir, nb_name)) as f:
+			nb = nbformat.reads(f.read(), as_version=4)
+			exporter = HideCodePDFExporter()
+			output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": nb_name[:nb_name.rfind('.')]}})
+		self.set_header('Content-Type', 'application/pdf')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.pdf')
+		self.flush()
+		self.write(output)
+		self.log.info("hide_code: Finished Latex PDF export for {}".format(nb_name))
+		self.finish()
+
 
 def __main__():
 	install()
@@ -49,9 +64,14 @@ def load_jupyter_server_extension(nb_app):
     host_pattern = '.*$'
     route_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/html')
     route_pattern2 = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/pdf')
+    route_pattern3 = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/latexpdf')
 
     base_url = web_app.settings['base_url']
-    web_app.add_handlers(host_pattern, [(route_pattern, HideCodeHTMLExportHandler), (route_pattern2, HideCodePDFExportHandler)])
+    web_app.add_handlers(host_pattern, [
+      (route_pattern, HideCodeHTMLExportHandler),
+      (route_pattern2, HideCodePDFExportHandler),
+      (route_pattern3, HideCodeLatexPDFExportHandler)
+    ])
 
 
 def install(nb_path=None, server_config=True, DEBUG=False):
