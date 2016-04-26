@@ -41,6 +41,18 @@ function ($, celltoolbar){
 		return (isHidden == undefined) ? undefined : isHidden
 	}
 
+	function hideOutputSetter(cell, value){
+		if (cell.metadata.hideOutput == undefined){ cell.metadata.hideOutput = false }
+        cell.metadata.hideOutput = value;
+   		toggleHideOutput(cell);
+	}
+
+	function hideOutputGetter(cell){
+		var isHidden = cell.metadata.hideOutput;
+		toggleHideOutput(cell);
+		return (isHidden == undefined) ? undefined : isHidden
+	}
+
 	function toggleHideCode(cell){
 		var c = $(cell.element);
 		if (cell.metadata.hideCode && cell.class_config.classname != 'MarkdownCell'){
@@ -59,6 +71,15 @@ function ($, celltoolbar){
 		}
 	}
 
+	function toggleHideOutput(cell){
+		var c = $(cell.element);
+		if (cell.metadata.hideOutput && cell.class_config.classname != 'MarkdownCell'){
+			c.find('.output_wrapper').css('display','none');
+		} else if(cell.class_config.classname != 'MarkdownCell') {
+			c.find('.output_wrapper').css('display','flex'); 
+		}
+	}
+
 	/**
 	* Add a toolbar button to toggle visibility of all code cells, input/output prompts, and remove any highlighting for the selected cell.
 	**/
@@ -67,7 +88,7 @@ function ($, celltoolbar){
 		    {
 		     'label' : 'Hide/show code',
 		     'icon' : 'fa-code',
-		     'callback' : function() { // toggling visibility is adding display: blcok to the element. Causing celltoolbar = None not work.
+		     'callback' : function() { // toggling visibility is adding display: block to the element. Causing celltoolbar = None not work.
 		        $('.input').toggle(); 
 		        $('.prompt').toggle(); 
 		        var ctb = $('.ctb_hideshow');
@@ -110,14 +131,18 @@ function ($, celltoolbar){
 
 	var hidePromptCallback = ctb.utils.checkbox_ui_generator('Hide Prompts ', hidePromptSetter,	hidePromptGetter);
 
+	var hideOutputCallback = ctb.utils.checkbox_ui_generator('Hide Outputs ', hideOutputSetter,	hideOutputGetter);
+
 	function setup(){
 		ctb.register_callback('hide_code.hideCode', hideCodeCallback);
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
-        ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode']);
+        ctb.register_callback('hide_code.hideOutputs', hideOutputCallback);
+        ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode','hide_code.hideOutputs']);
         addHideCodeButtonToToolbar();
         $.each(Jupyter.notebook.get_cells(), function(index, cell){
         	toggleHidePrompt(cell);
         	toggleHideCode(cell);
+        	toggleHideOutput(cell);
         });
 	}
 	
