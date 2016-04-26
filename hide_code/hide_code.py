@@ -29,7 +29,7 @@ class HideCodeHTMLExportHandler(IPythonHandler):
 
 class HideCodePDFExportHandler(IPythonHandler):
 	def get(self, nb_name):
-		log.info("hide_code: Starting PDF export for {}".format(nb_name))
+		self.log.info("hide_code: Starting PDF export for {}".format(nb_name))
 		with open(path.join(notebook_dir, nb_name)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
@@ -39,7 +39,7 @@ class HideCodePDFExportHandler(IPythonHandler):
 		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.pdf')
 		self.flush()
 		self.write(output)
-		log.info("hide_code: Finished PDF export for {}".format(nb_name))
+		self.log.info("hide_code: Finished PDF export for {}".format(nb_name))
 		self.finish()
 
 
@@ -133,25 +133,8 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 				print('Configured jupyter to auto-load hide_code export handlers.')
 			else:
 				print("Jupyter already configured to auto-load export handlers.")
-
-			# with open(path.join(current_dir, "auto-load-server-extension.txt"), 'r') as auto:
-			# 	auto_load_ext_text = auto.read();
-			# 	auto_loaded = False
-			# 	config_dir = j_path.jupyter_config_dir()
-
-			# 	with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'r') as nb_config:
-			# 		if auto_load_ext_text in nb_config.read():
-			# 			auto_loaded = True
-			# 			print("jupyter_notebook_config.py already configured to auto-load hide_code export handlers.")
-
-			# 	if not auto_loaded:
-			# 		with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'a') as ipython_config:
-			# 			ipython_config.write(auto_load_ext_text)
-			# 			print('Configured default_profile to auto-load hide_code server extensions.')
 		except:
-			print('Unable to install server extension.') # + j_path.jupyter_config_path(),)
-			# print('jupyter_notebook_config.py may not exist.')
-			# print('Try running \'jupyter notebook --generate-config\' and reinstall hide_code.')
+			print('Unable to install server extension.') 
 
 def notebook_name(nb_name):
 	return nb_name[:-6]
@@ -187,7 +170,7 @@ def setup_info():
 				custom_js = custom_js + line + ' '
 
 
-	return ("Installation dir: {0}\nConfiguration dir:{1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
+	return ("Installation dir: {0}\nConfiguration dir: {1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
 		.format(get_site_package_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
 
 

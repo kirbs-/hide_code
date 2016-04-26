@@ -93,7 +93,7 @@ function ($, celltoolbar){
 		    	'label' : 'Export to HTML',
 		    	'icon' : 'fa-file-text-o',
 		    	'callback' : function (){
-		    		window.location=document.URL + "/export/html";
+		    		window.location = window.location.origin + window.location.pathname + "/export/html";
 		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    },
@@ -101,7 +101,8 @@ function ($, celltoolbar){
 		    	'label' : 'Export to PDF',
 		    	'icon' : 'fa-file-pdf-o',
 		    	'callback' : function (){
-		    		window.location=document.URL + "/export/pdf"
+		    		window.location = window.location.origin + window.location.pathname + "/export/pdf";
+		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    }
 		  ]);
