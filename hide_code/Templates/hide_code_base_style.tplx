@@ -20,7 +20,7 @@
 %===============================================================================
 
 ((* block input scoped *))
-    ((( add_prompt(cell.source | highlight_code(strip_verbatim=True), cell, 'In ', 'incolor') )))
+    ((( add_prompt(cell.source | highlight_code(strip_verbatim=True), cell, 'In ', 'incolor', cell.metadata.hideCode) )))
 ((* endblock input *))
 
 
@@ -31,7 +31,7 @@
 ((* block execute_result scoped *))
     ((*- for type in output.data | filter_data_type -*))
         ((*- if type in ['text/plain']*))
-            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor') )))
+            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor', False) )))
         ((* else -*))
 \texttt{\color{outcolor}Out[{\color{outcolor}((( cell.execution_count )))}]:}((( super() )))
         ((*- endif -*))
@@ -43,28 +43,22 @@
 % Support Macros
 %==============================================================================
 
-% Name: draw_prompt
+% Name: add_prompt
 % Purpose: Renders an output/input prompt
-((* macro add_prompt(text, cell, prompt, prompt_color) -*))
+((* macro add_prompt(text, cell, prompt, prompt_color, hide_contents=False) -*))
     ((*- if cell.execution_count is defined -*))
-    ((*- set execution_count = "" ~ (cell.execution_count | replace(None, " ")) -*))
+        ((*- set execution_count = "" ~ (cell.execution_count | replace(None, " ")) -*))
     ((*- else -*))
-    ((*- set execution_count = " " -*))
+        ((*- set execution_count = " " -*))
     ((*- endif -*))
     ((*- set indention =  " " * (execution_count | length + 7) -*))
+    ((*- if hide_contents -*))
+        ((*- set text = "" -*))
+    ((*- endif -*))
 
-((*- if cell.metadata.hidePrompt and cell.metadata.hideCode-*))
-\begin{Verbatim}[commandchars=\\\{\}]
-
-\end{Verbatim}
-((*- elif cell.metadata.hidePrompt -*))
+((*- if cell.metadata.hidePrompt -*))
 \begin{Verbatim}[commandchars=\\\{\}]
 ((( text )))
-\end{Verbatim}
-((*- elif cell.metadata.hideCode -*))
-((*- set text = "" -*))
-\begin{Verbatim}[commandchars=\\\{\}]
-((( text | add_prompts(first='{\color{' ~ prompt_color ~ '}' ~ prompt ~ '[{\\color{' ~ prompt_color ~ '}' ~ execution_count ~ '}]:} ', cont=indention) )))
 \end{Verbatim}
 ((*- else -*))
 \begin{Verbatim}[commandchars=\\\{\}]
