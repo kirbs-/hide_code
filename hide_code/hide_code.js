@@ -74,9 +74,9 @@ function ($, celltoolbar){
 	function toggleHideOutput(cell){
 		var c = $(cell.element);
 		if (cell.metadata.hideOutput && cell.class_config.classname != 'MarkdownCell'){
-			c.find('.output_wrapper').css('display','none');
+			c.find('.output_wrapper .output_subarea').css('display','none');
 		} else if(cell.class_config.classname != 'MarkdownCell') {
-			c.find('.output_wrapper').css('display','flex'); 
+			c.find('.output_wrapper .output_subarea').css('display','block'); 
 		}
 	}
 

@@ -26,9 +26,6 @@ div.output_subarea {
 {%- endblock in_prompt -%}
 
 {% block output %}
-{%- if cell.metadata.hideOutput -%}
-<div class="output_area"></div>
-{%- else -%}
 <div class="output_area">
 	{%- if output.output_type == 'execute_result' and not cell.metadata.hidePrompt -%}
 	    <div class="prompt output_prompt">
@@ -41,11 +38,13 @@ div.output_subarea {
 	    <div class="prompt">
 	{%- endif -%}
 	</div>
-	{% block execute_result -%}	{{ super() }} {%- endblock execute_result %}
-	{%- block stream -%} {{ super() }} {%- endblock stream -%}
-	{%- if output.output_type == 'error' -%}
-		{%- block error -%} {{ super() }} {%- endblock error -%}
-	{%- endif -%}
+	{%- if cell.metadata.hideOutput -%}
+  {%- else -%}
+	    {% block execute_result -%}	{{ super() }} {%- endblock execute_result %}
+	    {%- block stream -%} {{ super() }} {%- endblock stream -%}
+	    {%- if output.output_type == 'error' -%}
+		      {%- block error -%} {{ super() }} {%- endblock error -%}
+	    {%- endif -%}
+  {%- endif -%}
 </div>
-{%- endif -%}
 {% endblock output %}

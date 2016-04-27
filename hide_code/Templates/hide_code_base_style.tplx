@@ -29,16 +29,18 @@
 %===============================================================================
 
 ((* block execute_result scoped *))
-((*- if cell.metadata.hideOutput -*))
-((*- else -*))
     ((*- for type in output.data | filter_data_type -*))
         ((*- if type in ['text/plain'] -*))
-            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor') )))
+            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor', cell.metadata.hideOutput) )))
         ((*- else -*))
-\texttt{\color{outcolor}Out[{\color{outcolor}((( cell.execution_count )))}]:}((( super() )))
+            ((*- if cell.metadata.hidePrompt -*))
+\texttt{\color{outcolor}Out[{\color{outcolor}((( cell.execution_count )))}]:}
+            ((*- endif -*))
+            ((*- if cell.metadata.hideOutput -*))
+((( super() )))
+            ((*- endif -*))
         ((*- endif -*))
     ((*- endfor -*))
-((*- endif -*))
 ((* endblock execute_result *))
 
 
