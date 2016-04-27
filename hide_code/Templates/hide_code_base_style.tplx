@@ -29,15 +29,25 @@
 %===============================================================================
 
 ((* block execute_result scoped *))
+((*- if cell.metadata.hideOutput -*))
+((*- else -*))
     ((*- for type in output.data | filter_data_type -*))
-        ((*- if type in ['text/plain']*))
-            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor', False) )))
-        ((* else -*))
+        ((*- if type in ['text/plain'] -*))
+            ((( add_prompt(output.data['text/plain'] | escape_latex, cell, 'Out', 'outcolor') )))
+        ((*- else -*))
 \texttt{\color{outcolor}Out[{\color{outcolor}((( cell.execution_count )))}]:}((( super() )))
         ((*- endif -*))
     ((*- endfor -*))
+((*- endif -*))
 ((* endblock execute_result *))
 
+
+((* block stream *))
+((*- if cell.metadata.hideOutput -*))
+((*- else -*))
+    ((( super() )))
+((*- endif -*))
+((* endblock stream *))
 
 %==============================================================================
 % Support Macros

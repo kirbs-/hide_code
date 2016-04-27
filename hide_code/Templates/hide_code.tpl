@@ -26,6 +26,9 @@ div.output_subarea {
 {%- endblock in_prompt -%}
 
 {% block output %}
+{%- if cell.metadata.hideOutput -%}
+<div class="output_area"></div>
+{%- else -%}
 <div class="output_area">
 	{%- if output.output_type == 'execute_result' and not cell.metadata.hidePrompt -%}
 	    <div class="prompt output_prompt">
@@ -44,4 +47,5 @@ div.output_subarea {
 		{%- block error -%} {{ super() }} {%- endblock error -%}
 	{%- endif -%}
 </div>
+{%- endif -%}
 {% endblock output %}
