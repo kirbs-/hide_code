@@ -15,46 +15,45 @@ notebook_dir = ""
 base_url = ""
 
 class HideCodeHTMLExportHandler(IPythonHandler):
-	def get(self, nb_name, in2=None, in3=None):
-		self.log.info("hide_code: Starting HTML export for {}".format(nb_name))
-		with open(ipynb_file_name(nb_name, in2, in3)) as f:
+	def get(self, *args):
+		self.log.info("hide_code: Starting HTML export for {}".format(args[-1]))
+		with open(ipynb_file_name(args)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
 			output_html, resources = exporter.from_notebook_node(nb)
 		self.set_header('Content-Type', 'text/html')
-		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name, in2, in3) + '.html')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.html')
 		self.flush()
 		self.write(output_html)
-		self.log.info("hide_code: Finished HTML export for {}".format(nb_name))
+		self.log.info("hide_code: Finished HTML export for {}".format(args[-1]))
 		self.finish()
 
 class HideCodePDFExportHandler(IPythonHandler):
-	def get(self, nb_name, in2=None, in3=None):
-		self.log.info("hide_code: Starting PDF export for {}".format(nb_name))
-		with open(ipynb_file_name(nb_name, in2, in3)) as f:
+	def get(self, *args):
+		self.log.info("hide_code: Starting PDF export for {}".format(args[-1]))
+		with open(ipynb_file_name(args)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
 			output_html, resources = exporter.from_notebook_node(nb)
 			output = pdfkit.from_string(output_html, False)
 		self.set_header('Content-Type', 'application/pdf')
-		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name, in2, in3) + '.pdf')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.pdf')
 		self.flush()
 		self.write(output)
-		self.log.info("hide_code: Finished PDF export for {}".format(nb_name))
+		self.log.info("hide_code: Finished PDF export for {}".format(args[-1]))
 		self.finish()
 
 class HideCodeLatexPDFExportHandler(IPythonHandler):
-	def get(self, nb_name, in2=None, in3=None):
-		self.log.info("hide_code: Starting Latex PDF export for {}".format(nb_name))
-		with open(ipynb_file_name(nb_name, in2, in3)) as f:
+	def get(self, *args):
+		self.log.info("hide_code: Starting Latex PDF export for {}".format(args[-1]))
+		with open(ipynb_file_name(args)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodePDFExporter()
-			output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": nb_name[:nb_name.rfind('.')]}})
-		self.set_header('Content-Type', 'application/pdf')
-		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name, in2, in3) + '.pdf')
+			output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.pdf')
 		self.flush()
 		self.write(output)
-		self.log.info("hide_code: Finished Latex PDF export for {}".format(nb_name))
+		self.log.info("hide_code: Finished Latex PDF export for {}".format(args[-1]))
 		self.finish()
 
 
@@ -157,28 +156,29 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 		except:
 			print('Unable to install server extension.') 
 
-def notebook_name(nb_name, in2=None, in3=None):
-	if in3:
-		return in3[:-6]
-	elif in2:
-		return in2[:-6]
-	else:
-		return nb_name[:-6]
+def notebook_name(params):
+	"""
+	Returns notebook name without .ipynb extension.
+	"""
+	args = [param.replace('/','') for param in params if param is not None]
+	return args[-1][:-6]
 
 def get_site_package_dir():
+	"""
+
+	"""
 	os_file = os.__file__
 	if os_file.endswith('c'):
 		return path.join(os_file[:-7], "site-packages")
 	else:
 		return path.join(os_file[:-6], "site-packages")
 
-def ipynb_file_name(in1, in2, in3):
-	if in3:
-		return ath.join(notebook_dir, in1, in2[1:], in3[1:])
-	elif in2:
-		return path.join(notebook_dir, in1, in2[1:])
-	else:
-		return path.join(notebook_dir, in1)
+def ipynb_file_name(params):
+	"""
+	Returns OS path to notebook based on route parameters. 
+	"""
+	p = [param.replace('/','') for param in params if param is not None]
+	return path.join(*p)
 
 def setup_info():
 	server_cm = ConfigManager(config_dir=j_path.jupyter_config_dir())
