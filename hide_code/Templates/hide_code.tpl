@@ -40,6 +40,8 @@ div.output_subarea {
 	</div>
 	{% block execute_result -%}	{{ super() }} {%- endblock execute_result %}
 	{%- block stream -%} {{ super() }} {%- endblock stream -%}
-	{%- block error -%} {{ super() }} {%- endblock error -%}
+	{%- if output.output_type == 'error' -%}
+		{%- block error -%} {{ super() }} {%- endblock error -%}
+	{%- endif -%}
 </div>
 {% endblock output %}

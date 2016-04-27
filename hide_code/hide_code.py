@@ -15,43 +15,45 @@ notebook_dir = ""
 base_url = ""
 
 class HideCodeHTMLExportHandler(IPythonHandler):
-	def get(self, nb_name):
-		with open(path.join(notebook_dir, nb_name)) as f:
+	def get(self, *args):
+		self.log.info("hide_code: Starting HTML export for {}".format(args[-1]))
+		with open(ipynb_file_name(args)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
 			output_html, resources = exporter.from_notebook_node(nb)
 		self.set_header('Content-Type', 'text/html')
-		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.html')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.html')
 		self.flush()
-		# output = ' '.join(format(ord(x), 'b') for x in output_html)
 		self.write(output_html)
+		self.log.info("hide_code: Finished HTML export for {}".format(args[-1]))
 		self.finish()
 
 class HideCodePDFExportHandler(IPythonHandler):
-	def get(self, nb_name):
-		with open(path.join(notebook_dir, nb_name)) as f:
+	def get(self, *args):
+		self.log.info("hide_code: Starting PDF export for {}".format(args[-1]))
+		with open(ipynb_file_name(args)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodeHTMLExporter()
 			output_html, resources = exporter.from_notebook_node(nb)
 			output = pdfkit.from_string(output_html, False)
 		self.set_header('Content-Type', 'application/pdf')
-		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.pdf')
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.pdf')
 		self.flush()
 		self.write(output)
+		self.log.info("hide_code: Finished PDF export for {}".format(args[-1]))
 		self.finish()
 
 class HideCodeLatexPDFExportHandler(IPythonHandler):
-	def get(self, nb_name):
-		self.log.info("hide_code: Starting Latex PDF export for {}".format(nb_name))
-		with open(path.join(notebook_dir, nb_name)) as f:
+	def get(self, *args):
+		self.log.info("hide_code: Starting Latex PDF export for {}".format(args[-1]))
+		with open(ipynb_file_name(args)) as f:
 			nb = nbformat.reads(f.read(), as_version=4)
 			exporter = HideCodePDFExporter()
-			output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": nb_name[:nb_name.rfind('.')]}})
-		self.set_header('Content-Type', 'application/pdf')
-		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(nb_name) + '.pdf')
+			output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
+		self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.pdf')
 		self.flush()
 		self.write(output)
-		self.log.info("hide_code: Finished Latex PDF export for {}".format(nb_name))
+		self.log.info("hide_code: Finished Latex PDF export for {}".format(args[-1]))
 		self.finish()
 
 
@@ -59,19 +61,22 @@ def __main__():
 	install()
 
 def load_jupyter_server_extension(nb_app):
-    web_app = nb_app.web_app
-    notebook_dir = nb_app.notebook_dir
-    host_pattern = '.*$'
-    route_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/html')
-    route_pattern2 = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/pdf')
-    route_pattern3 = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)/export/latexpdf')
+	nb_app.log.info("hide_code: Attempting to load hid_code export handler extensions.")
+	web_app = nb_app.web_app
+	notebook_dir = nb_app.notebook_dir
+	host_pattern = '.*$'
+	base_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)(/[^/]*)?/export/')
+	html_pattern = base_pattern + 'html'
+	pdf_html_pattern = base_pattern + 'pdf'
+	pdf_latex_pattern = base_pattern + 'latexpdf'
 
-    base_url = web_app.settings['base_url']
-    web_app.add_handlers(host_pattern, [
-      (route_pattern, HideCodeHTMLExportHandler),
-      (route_pattern2, HideCodePDFExportHandler),
-      (route_pattern3, HideCodeLatexPDFExportHandler)
-    ])
+	base_url = web_app.settings['base_url']
+	web_app.add_handlers(host_pattern, [
+		(html_pattern, HideCodeHTMLExportHandler),
+		(pdf_html_pattern, HideCodePDFExportHandler),
+		(pdf_latex_pattern, HideCodeLatexPDFExportHandler)
+	])
+	nb_app.log.info("hide_code: Hide_code export handler extensions loaded.")
 
 
 def install(nb_path=None, server_config=True, DEBUG=False):
@@ -92,7 +97,7 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 	# last ditch effort in case jupyter config directories don't contain custom/custom.js		
 	if install_path == None:	
 		print("No config directories contain \"custom\" folder. Trying site-packages...")	
-		install_path = path.join(site_packages_path, "notebook/static/custom")
+		install_path = path.join(site_packages_path, "notebook", "static", "custom")
 	
 
 	if nb_path != None:
@@ -108,7 +113,7 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 		print('Copying hide_code.js to ' + install_path) 
 
 		# add require to end of custom.js to auto-load on notebook startup
-		print("Attempting to configure custom.js to auto-load hide__code.js...")
+		print("Attempting to configure custom.js to auto-load hide_code.js...")
 		try:
 			with open(path.join(current_dir, "auto-load.txt")) as auto:
 				auto_load_txt = auto.read();
@@ -133,7 +138,7 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 		print('Make sure Jupyter is installed.')
 
 	if server_config:
-		print("Attempting to configure default profile to auto-load hide_code export handlers.")
+		print("Attempting to configure auto-loading for hide_code export handlers.")
 		try:
 			# Activate the Python server extension
 			server_cm = ConfigManager(config_dir=j_path.jupyter_config_dir())
@@ -145,35 +150,60 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 			if extension not in server_extensions:
 				cfg['NotebookApp']['server_extensions'] += [extension]
 				server_cm.update('jupyter_notebook_config', cfg)
-				print('Configured jupyter to auto-load hide_code server extensions.')
+				print('Configured jupyter to auto-load hide_code export handlers.')
 			else:
-				print("jupyter_notebook_config already configured to auto-load export handlers.")
-
-			# with open(path.join(current_dir, "auto-load-server-extension.txt"), 'r') as auto:
-			# 	auto_load_ext_text = auto.read();
-			# 	auto_loaded = False
-			# 	config_dir = j_path.jupyter_config_dir()
-
-			# 	with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'r') as nb_config:
-			# 		if auto_load_ext_text in nb_config.read():
-			# 			auto_loaded = True
-			# 			print("jupyter_notebook_config.py already configured to auto-load hide_code export handlers.")
-
-			# 	if not auto_loaded:
-			# 		with open(path.join(config_dir, 'jupyter_notebook_config.py'), 'a') as ipython_config:
-			# 			ipython_config.write(auto_load_ext_text)
-			# 			print('Configured default_profile to auto-load hide_code server extensions.')
+				print("Jupyter already configured to auto-load export handlers.")
 		except:
-			print('Unable to install server extension.') # + j_path.jupyter_config_path(),)
-			# print('jupyter_notebook_config.py may not exist.')
-			# print('Try running \'jupyter notebook --generate-config\' and reinstall hide_code.')
+			print('Unable to install server extension.') 
 
-def notebook_name(nb_name):
-	return nb_name[:-6]
+def notebook_name(params):
+	"""
+	Returns notebook name without .ipynb extension.
+	"""
+	args = [param.replace('/','') for param in params if param is not None]
+	return args[-1][:-6]
 
 def get_site_package_dir():
+	"""
+
+	"""
 	os_file = os.__file__
 	if os_file.endswith('c'):
 		return path.join(os_file[:-7], "site-packages")
 	else:
 		return path.join(os_file[:-6], "site-packages")
+
+def ipynb_file_name(params):
+	"""
+	Returns OS path to notebook based on route parameters. 
+	"""
+	p = [param.replace('/','') for param in params if param is not None]
+	return path.join(*p)
+
+def setup_info():
+	server_cm = ConfigManager(config_dir=j_path.jupyter_config_dir())
+	cfg = server_cm.get('jupyter_notebook_config')
+	server_extensions = (cfg.setdefault('NotebookApp', {})
+				.setdefault('server_extensions', [])
+				)
+	extension = 'hide_code.hide_code'
+	if extension not in server_extensions:
+		ext = 'Not loaded'
+	else:
+		ext = 'Loaded'
+
+	files = []
+	for (dirpath, dirnames, filenames) in os.walk(path.join(get_site_package_dir(), 'hide_code')):
+		files.extend(filenames)
+		break	
+
+	custom_js = ''
+	with open(path.join(get_site_package_dir(), 'notebook','static','custom','custom.js'), 'r') as f:
+		for line in iter(f):
+			if not line.startswith(' *') and not line.startswith('/'):
+				custom_js = custom_js + line + ' '
+
+
+	return ("Installation dir: {0}\nConfiguration dir: {1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
+		.format(get_site_package_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
+

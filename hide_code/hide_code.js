@@ -93,21 +93,24 @@ function ($, celltoolbar){
 		    	'label' : 'Export to HTML',
 		    	'icon' : 'fa-file-text-o',
 		    	'callback' : function (){
-		    		window.location=document.URL + "/export/html"
+		    		window.location = window.location.origin + window.location.pathname + "/export/html";
+		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    },
 		    {
 		    	'label' : 'Export to PDF via HTML',
 		    	'icon' : 'fa-file-pdf-o',
 		    	'callback' : function (){
-		    		window.location=document.URL + "/export/pdf"
+		    		window.location = window.location.origin + window.location.pathname + "/export/pdf";
+		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    },
 		    {
 		    	'label' : 'Export to PDF via Latex',
 		    	'icon' : 'fa-file-o',
 		    	'callback' : function (){
-		    		window.location=document.URL + "/export/latexpdf"
+		    		window.location = window.location.origin + window.location.pathname + "/export/latexpdf";
+		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    }
 		  ]);
