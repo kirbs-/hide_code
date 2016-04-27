@@ -98,10 +98,18 @@ function ($, celltoolbar){
 		    	}
 		    },
 		    {
-		    	'label' : 'Export to PDF',
+		    	'label' : 'Export to PDF via HTML',
 		    	'icon' : 'fa-file-pdf-o',
 		    	'callback' : function (){
 		    		window.location = window.location.origin + window.location.pathname + "/export/pdf";
+		    		Jupyter.notebook.kernel.reconnect();
+		    	}
+		    },
+		    {
+		    	'label' : 'Export to PDF via Latex',
+		    	'icon' : 'fa-file-o',
+		    	'callback' : function (){
+		    		window.location = window.location.origin + window.location.pathname + "/export/latexpdf";
 		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    }
