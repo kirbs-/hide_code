@@ -43,13 +43,19 @@
     ((*- endfor -*))
 ((* endblock execute_result *))
 
-
 ((* block stream *))
 ((*- if cell.metadata.hideOutput -*))
 ((*- else -*))
     ((( super() )))
 ((*- endif -*))
 ((* endblock stream *))
+
+((* block error *))
+((*- if cell.metadata.hideOutput -*))
+((*- else -*))
+    ((( super() )))
+((*- endif -*))
+((* endblock error *))
 
 %==============================================================================
 % Support Macros
