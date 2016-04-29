@@ -38,10 +38,13 @@ div.output_subarea {
 	    <div class="prompt">
 	{%- endif -%}
 	</div>
-	{% block execute_result -%}	{{ super() }} {%- endblock execute_result %}
-	{%- block stream -%} {{ super() }} {%- endblock stream -%}
-	{%- if output.output_type == 'error' -%}
-		{%- block error -%} {{ super() }} {%- endblock error -%}
-	{%- endif -%}
+	{%- if cell.metadata.hideOutput -%}
+  {%- else -%}
+	    {% block execute_result -%}	{{ super() }} {%- endblock execute_result %}
+	    {%- block stream -%} {{ super() }} {%- endblock stream -%}
+	    {%- if output.output_type == 'error' -%}
+		      {%- block error -%} {{ super() }} {%- endblock error -%}
+	    {%- endif -%}
+  {%- endif -%}
 </div>
 {% endblock output %}
