@@ -10,6 +10,8 @@ from .hide_code_html_exporter import HideCodeHTMLExporter
 from .hide_code_pdf_exporter import HideCodePDFExporter
 import pdfkit
 from notebook.services.config import ConfigManager
+from .hide_code_config import HideCodeConfig as hc_config
+from .utils import Utils
 
 notebook_dir = ""
 base_url = ""
@@ -65,16 +67,14 @@ def load_jupyter_server_extension(nb_app):
 	web_app = nb_app.web_app
 	notebook_dir = nb_app.notebook_dir
 	host_pattern = '.*$'
-	base_pattern = url_path_join(web_app.settings['base_url'], 'notebooks/([^/]+)(/[^/]*)?/export/')
-	html_pattern = base_pattern + 'html'
-	pdf_html_pattern = base_pattern + 'pdf'
-	pdf_latex_pattern = base_pattern + 'latexpdf'
+	global base_url 
+	base_url = web_app.settings['base_url']
 
 	base_url = web_app.settings['base_url']
 	web_app.add_handlers(host_pattern, [
-		(html_pattern, HideCodeHTMLExportHandler),
-		(pdf_html_pattern, HideCodePDFExportHandler),
-		(pdf_latex_pattern, HideCodeLatexPDFExportHandler)
+		(route_pattern_for('html'), HideCodeHTMLExportHandler),
+		(route_pattern_for('pdf'), HideCodePDFExportHandler),
+		(route_pattern_for('latexpdf'), HideCodeLatexPDFExportHandler)
 	])
 	nb_app.log.info("hide_code: Hide_code export handler extensions loaded.")
 
@@ -84,7 +84,7 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 	print('Starting hide_code.js install...')
 	current_dir = path.abspath(path.dirname(__file__))
 	config_dirs = j_path.jupyter_config_path()
-	site_packages_path = get_site_package_dir()
+	site_packages_path = Utils.get_site_package_dir()
 
 	# check for config directory with a "custom" folder
 	# TODO update this logic to check if custom.js file exists
@@ -156,22 +156,19 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 		except:
 			print('Unable to install server extension.') 
 
+def route_pattern_for(exporter):
+	pattern = ''
+	for i in range(1, hc_config.get('nested_params_depth')):
+		pattern += '(/[^/]*)?'
+
+	return url_path_join(base_url, 'notebooks/([^/]+)' + pattern, 'export', exporter)
+
 def notebook_name(params):
 	"""
 	Returns notebook name without .ipynb extension.
 	"""
 	args = [param.replace('/','') for param in params if param is not None]
 	return args[-1][:-6]
-
-def get_site_package_dir():
-	"""
-
-	"""
-	os_file = os.__file__
-	if os_file.endswith('c'):
-		return path.join(os_file[:-7], "site-packages")
-	else:
-		return path.join(os_file[:-6], "site-packages")
 
 def ipynb_file_name(params):
 	"""
@@ -193,17 +190,17 @@ def setup_info():
 		ext = 'Loaded'
 
 	files = []
-	for (dirpath, dirnames, filenames) in os.walk(path.join(get_site_package_dir(), 'hide_code')):
+	for (dirpath, dirnames, filenames) in os.walk(path.join(Utils.get_site_package_dir(), 'hide_code')):
 		files.extend(filenames)
 		break	
 
 	custom_js = ''
-	with open(path.join(get_site_package_dir(), 'notebook','static','custom','custom.js'), 'r') as f:
+	with open(path.join(Utils.get_site_package_dir(), 'notebook','static','custom','custom.js'), 'r') as f:
 		for line in iter(f):
 			if not line.startswith(' *') and not line.startswith('/'):
 				custom_js = custom_js + line + ' '
 
 
 	return ("Installation dir: {0}\nConfiguration dir: {1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
-		.format(get_site_package_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
+		.format(Utils.get_site_package_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
 
