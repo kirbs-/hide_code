@@ -10,33 +10,29 @@ Cell output hiding (thanks to @acspike).
 ## Introduction
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and outputs. Make a notebook a code free document for presenting with a single click by pressing ![hide_code toggle](/images/button.png)
 
-###### Normal
-![image1.1](/images/1.1.png)
+|Normal|Hide Code Enabled|
+|![image1.1](/images/1.1.png)|
+![image1.2](/images/1.2.png)|
 
-###### Hide code enabled
-![image1.2](/images/1.2.png)
-
-Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. Then use "Hide Code" and "Hide Prompts" checkboxes to hide the specific cell's code or cell's input/output prompts.
+Or customize each cell by selecting "Hide code" cell Toolbar dropdown. Then use "Hide Code" and "Hide Prompts" checkboxes to hide the specific cell's code or cell's input/output prompts.
 
 ![image2](/images/2.png)
 
-###### Normal
-![image3.1](/images/3.1.png)
-
-###### Hide code enabled
-![image3.2](/images/3.2.png)
+|Normal|Hide Code Enabled|
+|![image3.1](/images/3.1.png)|![image3.2](/images/3.2.png)|
 
 ## Exporting
 Hide_code adds HTML, PDF via HTML, and PDF via Latex export options to Jupyter. Exporting respects hide_code's code, prompt, and output selections; these must be saved prior to exporting. 
-
-### Notes
-**Exporting to PDF via HTML requires [wkhtmltopdf](http://wkhtmltopdf.org/)!** 
-**Exporting to PDF via Latex requires a Tex library.**
 
 This feature continues to evolve. Items on the road map incude:
 * saving as a different file name.
 * support for custom CSS.
 * single click exporting with all code and prompts hidden (similar to how the toolbar button).
+
+### Notes
+* **Exporting to PDF via HTML requires [wkhtmltopdf](http://wkhtmltopdf.org/)!** 
+* **Exporting to PDF via Latex requires a Tex library.**
+
 
 ### Via notebook
 To export via HTML or PDF simply click on the respective button.
