@@ -3,10 +3,12 @@
 
 Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
-### hide_code now supports HTML & PDF exporting!
+## New in 0.3.0 Release
+HTML & PDF exporting bug fixes.
+Cell output hiding (thanks to @acspike).
 
 ## Introduction
-hide_code is an extension for Jupyter/IPython notebooks to selectively hide code and prompts. Make a notebook a code free document for presenting with a single click by pressing ![hide_code toggle](/images/button.png)
+hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and outputs. Make a notebook a code free document for presenting with a single click by pressing ![hide_code toggle](/images/button.png)
 
 ###### Normal
 ![image1.1](/images/1.1.png)
@@ -25,10 +27,13 @@ Or customize each cell by selecting "Hide code" from the Cell Toolbar dropdown. 
 ![image3.2](/images/3.2.png)
 
 ## Exporting
-Exporting respects hide code/prmpt cell selections only. Output is saved in Jupyter's current working directory with the notebook's file name + '.html' or '.pdf'. **Exporting to PDF via notebook requires [wkhtmltopdf](http://wkhtmltopdf.org/)!** 
+Hide_code adds HTML, PDF via HTML, and PDF via Latex export options to Jupyter. Exporting respects hide_code's code, prompt, and output selections; these must be saved prior to exporting. 
+
+### Notes
+**Exporting to PDF via HTML requires [wkhtmltopdf](http://wkhtmltopdf.org/)!** 
+**Exporting to PDF via Latex requires a Tex library.**
 
 This feature continues to evolve. Items on the road map incude:
-* saving to a different file loaction.
 * saving as a different file name.
 * support for custom CSS.
 * single click exporting with all code and prompts hidden (similar to how the toolbar button).
@@ -38,13 +43,16 @@ To export via HTML or PDF simply click on the respective button.
 ![image4.1](/images/4.1.png)
 
 ### Via nbconvert command line
-To export via nbconvert command line, nbconvert 4.2 or later is required. Hide_code adds two export options to nbconvert, hide_code_html and hide_code_pdf. 
+To export via nbconvert command line, nbconvert 4.2 or later is required. Hide_code adds three export options to nbconvert, hide_code_html, hide_code_pdf, and hide_code_latexpdf. 
 
 Note: PDF exporting via command line uses nbconvert's built in PDF exporter.
 
 `jupyter nbconvert --to hide_code_html notebook_to_convert.ipynb`
 
 `jupyter nbconvert --to hide_code_pdf notebook_to_convert.ipynb`
+
+`jupyter nbconvert --to hide_code_latexpdf notebook_to_convert.ipynb'
+
 
 ## Installation
 ### Via pip

@@ -2,7 +2,7 @@
 * ----------------------------------------------------------------------------
 * Copyright (c) 2015 - Chris Kirby
 *
-* Distributed under the terms of the Modified BSD License.
+* Distributed under the terms of the MIT License.
 *
 * An IPython notebook extension to hide code inputs and prompts for presentation.
 * -----------------------------------------------------------------------------

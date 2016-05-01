@@ -15,7 +15,7 @@ def _post_install(dir):
 
 
 class install(_install):
-    description = 'Installs hide_code.js and hide_code export handlers server extension.'
+    description = 'Installs hide_code.js, hide_code export handlers and server extension.'
     # user_options = [{'auto-load=', None, 'Do not auto-load server extensions.'}]
 
     # def initialize_options(self):
@@ -42,7 +42,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version='0.3.0',
 
-    description='A Jupyter notebook extension to hide code and prompts.',
+    description='A Jupyter notebook extension to hide code, prompts and outputs.',
     long_description=long_description,
 
     # The project's main homepage.
@@ -116,6 +116,7 @@ setup(
         'nbconvert.exporters': [
             'hide_code_html = hide_code:HideCodeHTMLExporter',
             'hide_code_pdf = hide_code:HideCodePDFExporter',
+            'hide_code_latexpdf = hide_code.HideCodeLatexPDFExporter',
         ],
     }
 )
