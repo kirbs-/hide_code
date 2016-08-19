@@ -4,7 +4,7 @@ import shutil
 from .utils import Utils
 class HideCodeConfig(object):
 
-	config_file =  path.join(Utils.get_site_package_dir(), 'hide_code','hide_code_config.json')
+	config_file =  path.join(Utils.get_module_dir(),'hide_code_config.json')
 
 	@classmethod
 	def set(cls, key, value):

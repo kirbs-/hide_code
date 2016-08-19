@@ -1,14 +1,19 @@
 import os
+import inspect
+import notebook
 
 class Utils(object):
 
 	@classmethod
-	def get_site_package_dir(cls):
+	def get_notebook_module_dir(cls):
 		"""
+		Returns path to jupter notebook module.
+		"""
+		return os.path.dirname(inspect.getfile(notebook))
 
+	@classmethod
+	def get_module_dir(cls):
 		"""
-		os_file = os.__file__
-		if os_file.endswith('c'):
-			return os.path.join(os_file[:-7], "site-packages")
-		else:
-			return os.path.join(os_file[:-6], "site-packages")
+		Returns path to hide_code module.
+		"""
+		return os.path.dirname(inspect.getfile(cls))

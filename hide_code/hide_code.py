@@ -80,11 +80,20 @@ def load_jupyter_server_extension(nb_app):
 
 
 def install(nb_path=None, server_config=True, DEBUG=False):
+	"""
+	Installs javascript and exporting server extensions in Jupyter notebook.
+
+	Args:
+		nb_path (string): Path to notebook module.
+		server_config (boolean): Install exporting server extensions.
+		DEBUG (boolean): Verbose mode.
+	"""
+
 	install_path = None
 	print('Starting hide_code.js install...')
 	current_dir = path.abspath(path.dirname(__file__))
 	config_dirs = j_path.jupyter_config_path()
-	site_packages_path = Utils.get_site_package_dir()
+	notebook_module_path = Utils.get_notebook_module_dir()
 
 	# check for config directory with a "custom" folder
 	# TODO update this logic to check if custom.js file exists
@@ -96,8 +105,8 @@ def install(nb_path=None, server_config=True, DEBUG=False):
 
 	# last ditch effort in case jupyter config directories don't contain custom/custom.js		
 	if install_path == None:	
-		print("No config directories contain \"custom\" folder. Trying site-packages...")	
-		install_path = path.join(site_packages_path, "notebook", "static", "custom")
+		print("No config directories contain \"custom\" folder. Trying Jupyter notebook module path...")	
+		install_path = path.join(notebook_module_path, "static", "custom")
 	
 
 	if nb_path != None:
@@ -190,17 +199,17 @@ def setup_info():
 		ext = 'Loaded'
 
 	files = []
-	for (dirpath, dirnames, filenames) in os.walk(path.join(Utils.get_site_package_dir(), 'hide_code')):
+	for (dirpath, dirnames, filenames) in os.walk(path.join(Utils.get_module_dir())):
 		files.extend(filenames)
 		break	
 
 	custom_js = ''
-	with open(path.join(Utils.get_site_package_dir(), 'notebook','static','custom','custom.js'), 'r') as f:
+	with open(path.join(Utils.get_notebook_module_dir(), 'notebook','static','custom','custom.js'), 'r') as f:
 		for line in iter(f):
 			if not line.startswith(' *') and not line.startswith('/'):
 				custom_js = custom_js + line + ' '
 
 
 	return ("Installation dir: {0}\nConfiguration dir: {1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
-		.format(Utils.get_site_package_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
+		.format(Utils.get_module_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
 
