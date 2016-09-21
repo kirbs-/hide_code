@@ -204,7 +204,7 @@ def setup_info():
 		break	
 
 	custom_js = ''
-	with open(path.join(Utils.get_notebook_module_dir(), 'notebook','static','custom','custom.js'), 'r') as f:
+	with open(path.join(Utils.get_notebook_module_dir(), 'static','custom','custom.js'), 'r') as f:
 		for line in iter(f):
 			if not line.startswith(' *') and not line.startswith('/'):
 				custom_js = custom_js + line + ' '
