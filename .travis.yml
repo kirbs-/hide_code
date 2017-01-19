@@ -4,6 +4,7 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
+  - "3.6"
   # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
   # maintainers to fix their pypy-dev package.
   - "pypy"
