@@ -62,6 +62,21 @@ class HideCodeLatexPDFExportHandler(IPythonHandler):
 def __main__():
 	install()
 
+def _jupyter_nbextension_paths():
+    return [dict(
+        section="notebook",
+        # the path is relative to the `my_fancy_module` directory
+        src="",
+        # directory in the `nbextension/` namespace
+        dest="hide_code",
+        # _also_ in the `nbextension/` namespace
+        require="hide_code/hide_code")]
+
+def _jupyter_server_extension_paths():
+    return [{
+        "module": "hide_code"
+    }]
+
 def load_jupyter_server_extension(nb_app):
 	nb_app.log.info("hide_code: Attempting to load hid_code export handler extensions.")
 	web_app = nb_app.web_app
