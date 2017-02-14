@@ -10,9 +10,10 @@
 
 define([
 'jquery',
-'notebook/js/celltoolbar'
+'notebook/js/celltoolbar',
+'notebook/js/keyboard_manager'
 ], 
-function ($, celltoolbar){
+function ($, celltoolbar, keyboard_manager){
 	"use strict";
 
 	var ctb = celltoolbar.CellToolbar;
@@ -149,6 +150,11 @@ function ($, celltoolbar){
         ctb.register_callback('hide_code.hideOutputs', hideOutputCallback);
         ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode','hide_code.hideOutputs']);
         addHideCodeButtonToToolbar();
+        // Add keyboard shortcuts
+        keyboard_manager.command_shortcuts.add_shortcut('ctrl-q', toggleHideCode);
+        keyboard_manager.command_shortcuts.add_shortcut('ctrl-w', toggleHidePrompt);
+        keyboard_manager.command_shortcuts.add_shortcut('ctrl-e', toggleHideOutput);
+
         $.each(Jupyter.notebook.get_cells(), function(index, cell){
         	toggleHidePrompt(cell);
         	toggleHideCode(cell);
