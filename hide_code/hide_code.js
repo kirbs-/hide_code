@@ -11,9 +11,9 @@
 define([
 'jquery',
 'notebook/js/celltoolbar',
-'notebook/js/keyboard_manager'
+'base/js/namespace'
 ], 
-function ($, celltoolbar, keyboard_manager){
+function ($, celltoolbar, Jupyter){
 	"use strict";
 
 	var ctb = celltoolbar.CellToolbar;
@@ -30,6 +30,11 @@ function ($, celltoolbar, keyboard_manager){
 		return (isHidden == undefined) ? undefined : isHidden
 	}
 
+	/*
+	* Sets notebook cell's hide code metadata.
+	* @param {Notebook Cell} cell
+	* @param {Boolean} value
+	*/
 	function hidePromptSetter(cell, value){
 		if (cell.metadata.hidePrompt == undefined){ cell.metadata.hidePrompt = false }
         cell.metadata.hidePrompt = value;
@@ -144,16 +149,135 @@ function ($, celltoolbar, keyboard_manager){
 
 	var hideOutputCallback = ctb.utils.checkbox_ui_generator('Hide Outputs ', hideOutputSetter,	hideOutputGetter);
 
+	var hideCodeKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Hides selected cell\'s code',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		var cells = env.notebook.get_selected_cells();
+    		$.each(cells, function(index, value){
+    			hideCodeSetter(cells[index], true);
+    			try{
+    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[1]).prop('checked', true);
+    			} catch(err){
+    				//do nothing
+    			}
+    		});
+    	},
+    }, 'hide_code_action','hide_code');
+
+	/**
+	* Keyboard short cut action to hide selected cells.
+	* Binds to W
+	**/
+	var showCodeKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Shows selected cell\'s code',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		var cells = env.notebook.get_selected_cells();
+    		$.each(cells, function(index, value){
+    			hideCodeSetter(cells[index], false);
+    			try{
+    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[1]).prop('checked', false);
+    			} catch(err){
+    				//do nothing
+    			}
+    		});
+    	},
+    }, 'show_code_action','hide_code');
+
+    var hidePromptKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Hides selected cell\'s prompts.',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		var cells = env.notebook.get_selected_cells();
+    		$.each(cells, function(index, value){
+    			hidePromptSetter(cells[index], true);try{
+    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[0]).prop('checked', true);
+    			} catch(err){
+    				//do nothing
+    			}
+    		});
+    	},
+    }, 'hide_prompt_action','hide_code');
+
+	/**
+	* Keyboard short cut action to hide selected cells.
+	* Binds to W,W
+	**/
+	var showPromptKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Shows selected cell\'s prompts.',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		var cells = env.notebook.get_selected_cells();
+    		$.each(cells, function(index, value){
+    			hidePromptSetter(cells[index], false);
+    			try{
+    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[0]).prop('checked', false)
+    			} catch(err){
+    				//do nothing
+    			};
+    		});
+    	},
+    }, 'show_prompt_action','hide_code');
+
+    var hideOutputKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Hides selected cell\'s prompts.',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		var cells = env.notebook.get_selected_cells();
+    		$.each(cells, function(index, value){
+    			hideOutputSetter(cells[index], true);
+    			try{
+    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[2]).prop('checked', true);
+    			} catch(err){
+    				//do nothing
+    			}
+    		});
+    	},
+    }, 'hide_output_action','hide_code');
+
+	/**
+	* Keyboard short cut action to hide selected cells.
+	* Binds to W,W
+	**/
+	var showOutputKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Shows selected cell\'s prompts.',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		var cells = env.notebook.get_selected_cells();
+    		$.each(cells, function(index, value){
+    			hideOutputSetter(cells[index], false);
+    			try{
+    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[2]).prop('checked', false);
+    			} catch(err){
+    				//do nothing
+    			}
+    		});
+    	},
+    }, 'show_output_action','hide_code');
+
+    function addKeyboardShortcutBindings(){
+    	Jupyter.keyboard_manager.command_shortcuts.add_shortcut('e', 'hide_code:hide_code_action', 'hide_code');
+        Jupyter.keyboard_manager.command_shortcuts.add_shortcut('shift-e', 'hide_code:show_code_action', 'hide_code');
+        Jupyter.keyboard_manager.command_shortcuts.add_shortcut('w', 'hide_code:hide_prompt_action', 'hide_code');
+        Jupyter.keyboard_manager.command_shortcuts.add_shortcut('shift-w', 'hide_code:show_prompt_action', 'hide_code');
+        Jupyter.keyboard_manager.command_shortcuts.add_shortcut('r', 'hide_code:hide_output_action', 'hide_code');
+        Jupyter.keyboard_manager.command_shortcuts.add_shortcut('shift-r', 'hide_code:show_output_action', 'hide_code');
+    }
+
 	function setup(){
 		ctb.register_callback('hide_code.hideCode', hideCodeCallback);
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
         ctb.register_callback('hide_code.hideOutputs', hideOutputCallback);
         ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode','hide_code.hideOutputs']);
         addHideCodeButtonToToolbar();
-        // Add keyboard shortcuts
-        keyboard_manager.command_shortcuts.add_shortcut('ctrl-q', toggleHideCode);
-        keyboard_manager.command_shortcuts.add_shortcut('ctrl-w', toggleHidePrompt);
-        keyboard_manager.command_shortcuts.add_shortcut('ctrl-e', toggleHideOutput);
+        addKeyboardShortcutBindings();
 
         $.each(Jupyter.notebook.get_cells(), function(index, cell){
         	toggleHidePrompt(cell);
