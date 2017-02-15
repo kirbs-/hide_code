@@ -3,23 +3,24 @@
 
 Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
-## New in 0.3.0 Release
-HTML & PDF exporting bug fixes.
-Cell output hiding (thanks to @acspike).
-
 ## Introduction
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and outputs. Make a notebook a code free document for presenting with a single click by pressing ![hide_code toggle](/images/button.png)
 
-|Normal|Hide Code Enabled|
-|![image1.1](/images/1.1.png)|
-![image1.2](/images/1.2.png)|
+Normal
+![image1.1](/images/1.1.png)
+
+Hide Code Enabled
+![image1.2](/images/1.2.png)
 
 Or customize each cell by selecting "Hide code" cell Toolbar dropdown. Then use "Hide Code" and "Hide Prompts" checkboxes to hide the specific cell's code or cell's input/output prompts.
 
 ![image2](/images/2.png)
 
-|Normal|Hide Code Enabled|
-|![image3.1](/images/3.1.png)|![image3.2](/images/3.2.png)|
+Normal
+![image3.1](/images/3.1.png)
+
+Hide Code Enabled
+![image3.2](/images/3.2.png)
 
 ## Exporting
 Hide_code adds HTML, PDF via HTML, and PDF via Latex export options to Jupyter. Exporting respects hide_code's code, prompt, and output selections; these must be saved prior to exporting. 
@@ -47,7 +48,7 @@ Note: PDF exporting via command line uses nbconvert's built in PDF exporter.
 
 `jupyter nbconvert --to hide_code_pdf notebook_to_convert.ipynb`
 
-`jupyter nbconvert --to hide_code_latexpdf notebook_to_convert.ipynb'
+`jupyter nbconvert --to hide_code_latexpdf notebook_to_convert.ipynb`
 
 
 ## Installation
