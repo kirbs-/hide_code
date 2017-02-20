@@ -120,7 +120,7 @@ function ($, celltoolbar, Jupyter){
 		    	'label' : 'Export to HTML',
 		    	'icon' : 'fa-file-text-o',
 		    	'callback' : function (){
-		    		window.location = window.location.origin + window.location.pathname + "/export/html";
+		    		window.location = exportLink("html");
 		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    },
@@ -128,7 +128,7 @@ function ($, celltoolbar, Jupyter){
 		    	'label' : 'Export to PDF via HTML',
 		    	'icon' : 'fa-file-pdf-o',
 		    	'callback' : function (){
-		    		window.location = window.location.origin + window.location.pathname + "/export/pdf";
+		    		window.location = exportLink("pdf");
 		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    },
@@ -136,11 +136,15 @@ function ($, celltoolbar, Jupyter){
 		    	'label' : 'Export to PDF via Latex',
 		    	'icon' : 'fa-file-o',
 		    	'callback' : function (){
-		    		window.location = window.location.origin + window.location.pathname + "/export/latexpdf";
+		    		window.location = exportLink("latexpdf");
 		    		Jupyter.notebook.kernel.reconnect();
 		    	}
 		    }
 		  ]);
+	}
+
+	function exportLink(path){
+		return window.location.origin + window.location.pathname + "/export/" + path;
 	}
 
 	var hideCodeCallback = ctb.utils.checkbox_ui_generator(	'Hide Code ', hideCodeSetter, hideCodeGetter);
@@ -275,7 +279,9 @@ function ($, celltoolbar, Jupyter){
         var menu = getMenuBar()
         menu.append(menuItem('Hide Code','#'));
 
-        getHideCodeMenu().append(dropdownMenuItem('PDF Export', '#', 'HTML PDF exporter.'));
+        getHideCodeMenu().append(dropdownMenuItem('PDF Export (HTML)', exportLink('pdf'), 'HTML PDF exporter.'));
+        getHideCodeMenu().append(dropdownMenuItem('PDF Export (Latex)', exportLink('latexpdf'), 'Latex PDF exporter.'));
+        getHideCodeMenu().append(dropdownMenuItem('HTML Export', exportLink('html'), 'HTML exporter.'));
     }
 
     function getMenuBar(){
