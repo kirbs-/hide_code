@@ -271,6 +271,37 @@ function ($, celltoolbar, Jupyter){
         Jupyter.keyboard_manager.command_shortcuts.add_shortcut('shift-r', 'hide_code:show_output_action', 'hide_code');
     }
 
+    function addHideCodeMenuItem(){
+        var menu = getMenuBar()
+        menu.append(menuItem('Hide Code','#'));
+
+        getHideCodeMenu().append(dropdownMenuItem('PDF Export', '#', 'HTML PDF exporter.'));
+    }
+
+    function getMenuBar(){
+    	return $('#menus').find('.navbar-nav')
+    }
+
+    function getHideCodeMenu(){
+    	return $('#hide_code_menu_list')
+    }
+
+    function dropdownMenuItem(text, url, tooltip){
+    	var item = $('<li>', {title: tooltip, });
+    	var link = $('<a>', {href: url, text: text});
+    	item.append(link);
+    	return item
+    }
+
+    function menuItem(text, url){
+    	var menu_item = $('<li>', {class: 'dropdown', id: 'hide_code_menu_item'});
+    	var link = $('<a>', {class: 'dropdown-toggle', href: url, text: text, 'data-toggle': 'dropdown'});
+    	var dropdown_menu = $('<ul>', {id: 'hide_code_menu_list', class: 'dropdown-menu'});
+    	menu_item.append(link);
+    	menu_item.append(dropdown_menu);
+    	return menu_item
+    }
+
 	function setup(){
 		ctb.register_callback('hide_code.hideCode', hideCodeCallback);
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
@@ -278,6 +309,7 @@ function ($, celltoolbar, Jupyter){
         ctb.register_preset('Hide code',['hide_code.hidePrompts','hide_code.hideCode','hide_code.hideOutputs']);
         addHideCodeButtonToToolbar();
         addKeyboardShortcutBindings();
+        addHideCodeMenuItem();
 
         $.each(Jupyter.notebook.get_cells(), function(index, cell){
         	toggleHidePrompt(cell);
