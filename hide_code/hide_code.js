@@ -15,6 +15,9 @@ define([
 ], 
 function ($, celltoolbar, Jupyter){
 	"use strict";
+	const CODE = 1;
+	const PROMPT = 0;
+	const OUTPUT = 2;
 
 	var ctb = celltoolbar.CellToolbar;
 
@@ -86,6 +89,24 @@ function ($, celltoolbar, Jupyter){
 		}
 	}
 
+	function toggleAllPromptsAndCode(){
+		var all_hidden = Jupyter.notebook.metadata.hide_code_all_hidden;
+
+        if ( all_hidden == undefined ) { 
+        	all_hidden = false; 
+        };
+    	if ( all_hidden == false ) {
+        	Jupyter.notebook.metadata.hide_code_all_hidden = true;
+        	hideEach(CODE, Jupyter.notebook.get_cells(), true);
+        	hideEach(PROMPT, Jupyter.notebook.get_cells(), true);
+        } else {
+        	Jupyter.notebook.metadata.hide_code_all_hidden = false;
+        	hideEach(CODE, Jupyter.notebook.get_cells(), false);
+        	hideEach(PROMPT, Jupyter.notebook.get_cells(), false);
+
+        }
+	}
+
 	/**
 	* Add a toolbar button to toggle visibility of all code cells, input/output prompts, and remove any highlighting for the selected cell.
 	**/
@@ -94,27 +115,7 @@ function ($, celltoolbar, Jupyter){
 		    {
 		     'label' : 'Hide/show code',
 		     'icon' : 'fa-code',
-		     'callback' : function() { // toggling visibility is adding display: block to the element. Causing celltoolbar = None not work.
-		        $('.input').toggle(); 
-		        $('.prompt').toggle(); 
-		        var ctb = $('.ctb_hideshow');
-		        if(ctb.hasClass('ctb_show')) {
-		        	ctb.removeClass('ctb_show');
-		        } else {
-		        	ctb.addClass('ctb_show');
-		        }
-
-		        var ctb = $('.celltoolbar');
-		        if(ctb.hasClass('invisible')){
-		        	console.log('visible');
-		        	ctb.removeClass('invisible');
-		        } else {
-		        	console.log('invisible');
-		        	ctb.addClass('invisible');
-		        }
-		        // $('.celltoolbar').toggle();
-		        $('.selected').removeClass('selected').addClass('unselected');
-		      } 
+		     'callback' : toggleAllPromptsAndCode
 		    },
 		    {
 		    	'label' : 'Export to HTML',
@@ -153,20 +154,37 @@ function ($, celltoolbar, Jupyter){
 
 	var hideOutputCallback = ctb.utils.checkbox_ui_generator('Hide Outputs ', hideOutputSetter,	hideOutputGetter);
 
+	function hideEach(type, cells, hidden){
+		$.each(cells, function(index, value){
+			switch(type){
+				case PROMPT:
+					hidePromptSetter(cells[index], hidden);
+					break;
+				case CODE:
+					hideCodeSetter(cells[index], hidden);
+					break;
+				case OUTPUT:
+					hideOutputSetter(cells[index], hidden);
+					break;
+			}
+			try{
+				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[type]).prop('checked', hidden);
+			} catch(err){
+				//do nothing
+			}
+		});
+	}
+
+	/*
+	Keyboard shortcut handlers.
+	*/
+
 	var hideCodeKeyboardAction = Jupyter.keyboard_manager.actions.register({
     	help: 'Hides selected cell\'s code',
     	icon: 'fa-code',
     	help_index: '',
     	handler: function(env){
-    		var cells = env.notebook.get_selected_cells();
-    		$.each(cells, function(index, value){
-    			hideCodeSetter(cells[index], true);
-    			try{
-    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[1]).prop('checked', true);
-    			} catch(err){
-    				//do nothing
-    			}
-    		});
+    		hideEach(CODE, env.notebook.get_selected_cells(), true);
     	},
     }, 'hide_code_action','hide_code');
 
@@ -179,15 +197,7 @@ function ($, celltoolbar, Jupyter){
     	icon: 'fa-code',
     	help_index: '',
     	handler: function(env){
-    		var cells = env.notebook.get_selected_cells();
-    		$.each(cells, function(index, value){
-    			hideCodeSetter(cells[index], false);
-    			try{
-    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[1]).prop('checked', false);
-    			} catch(err){
-    				//do nothing
-    			}
-    		});
+    		hideEach(CODE, env.notebook.get_selected_cells(), false);
     	},
     }, 'show_code_action','hide_code');
 
@@ -196,14 +206,7 @@ function ($, celltoolbar, Jupyter){
     	icon: 'fa-code',
     	help_index: '',
     	handler: function(env){
-    		var cells = env.notebook.get_selected_cells();
-    		$.each(cells, function(index, value){
-    			hidePromptSetter(cells[index], true);try{
-    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[0]).prop('checked', true);
-    			} catch(err){
-    				//do nothing
-    			}
-    		});
+    		hideEach(PROMPT, env.notebook.get_selected_cells(), true);
     	},
     }, 'hide_prompt_action','hide_code');
 
@@ -216,15 +219,7 @@ function ($, celltoolbar, Jupyter){
     	icon: 'fa-code',
     	help_index: '',
     	handler: function(env){
-    		var cells = env.notebook.get_selected_cells();
-    		$.each(cells, function(index, value){
-    			hidePromptSetter(cells[index], false);
-    			try{
-    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[0]).prop('checked', false)
-    			} catch(err){
-    				//do nothing
-    			};
-    		});
+    		hideEach(PROMPT, env.notebook.get_selected_cells(), false);
     	},
     }, 'show_prompt_action','hide_code');
 
@@ -233,15 +228,7 @@ function ($, celltoolbar, Jupyter){
     	icon: 'fa-code',
     	help_index: '',
     	handler: function(env){
-    		var cells = env.notebook.get_selected_cells();
-    		$.each(cells, function(index, value){
-    			hideOutputSetter(cells[index], true);
-    			try{
-    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[2]).prop('checked', true);
-    			} catch(err){
-    				//do nothing
-    			}
-    		});
+    		hideEach(OUTPUT, env.notebook.get_selected_cells(), true);
     	},
     }, 'hide_output_action','hide_code');
 
@@ -254,17 +241,19 @@ function ($, celltoolbar, Jupyter){
     	icon: 'fa-code',
     	help_index: '',
     	handler: function(env){
-    		var cells = env.notebook.get_selected_cells();
-    		$.each(cells, function(index, value){
-    			hideOutputSetter(cells[index], false);
-    			try{
-    				$($(Jupyter.notebook.get_selected_cell().celltoolbar.inner_element[0]).find('input')[2]).prop('checked', false);
-    			} catch(err){
-    				//do nothing
-    			}
-    		});
+    		hideEach(OUTPUT, env.notebook.get_selected_cells(), false);
     	},
     }, 'show_output_action','hide_code');
+
+    var hidePromptsAndCodeKeyboardAction = Jupyter.keyboard_manager.actions.register({
+    	help: 'Hides selected cell\'s prompts and code.',
+    	icon: 'fa-code',
+    	help_index: '',
+    	handler: function(env){
+    		toggleAllPromptsAndCode()
+    	},
+    }, 'toggle_prompt_and_code_action','hide_code');
+
 
     function addKeyboardShortcutBindings(){
     	Jupyter.keyboard_manager.command_shortcuts.add_shortcut('e', 'hide_code:hide_code_action', 'hide_code');
@@ -273,6 +262,7 @@ function ($, celltoolbar, Jupyter){
         Jupyter.keyboard_manager.command_shortcuts.add_shortcut('shift-w', 'hide_code:show_prompt_action', 'hide_code');
         Jupyter.keyboard_manager.command_shortcuts.add_shortcut('r', 'hide_code:hide_output_action', 'hide_code');
         Jupyter.keyboard_manager.command_shortcuts.add_shortcut('shift-r', 'hide_code:show_output_action', 'hide_code');
+        Jupyter.keyboard_manager.command_shortcuts.add_shortcut('t', 'hide_code:toggle_prompt_and_code_action', 'hide_code');
     }
 
     function addHideCodeMenuItem(){
