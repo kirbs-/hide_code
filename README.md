@@ -2,12 +2,17 @@
 ![PyPI version](https://badge.fury.io/py/hide_code.svg) ![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg) 
 Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
-hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and outputs. Multiple export formats are supported. 
+hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and outputs. PDF and HTML export formats are fully supported. 
+
+![](/images/demo.gif)
 
 ## Installation
 1. `pip install hide_code`
 2. `jupyter nbextensions install hide_code`
 3. `jupyter nbextensions enable hide_code`
+
+## Upgrading from 0.3.1?
+Versions prior to 0.4 were installed by bootstrapping custom.js and jupyter configuration files. Pip uninstall does not remove these files. Upgrade to 0.4, then run `python -c "import hide_code; hide_code.uninstall_bootrapped_files()"`.
 
 
 ## Requirements
