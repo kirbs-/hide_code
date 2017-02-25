@@ -10,6 +10,8 @@ python:
   - "pypy"
 # command to install dependencies
 install:
+  # force six to install first as it's a dependicy of simplegeneric and simplegeneric is erroring.
+  - pip install six
   - pip install jupyter
   - pip install pdfkit
 # command to run tests
