@@ -298,7 +298,7 @@ function ($, celltoolbar, Jupyter){
     	return menu_item
     }
 
-	function setup(){
+	function load_ipython_extension(){
 		ctb.register_callback('hide_code.hideCode', hideCodeCallback);
         ctb.register_callback('hide_code.hidePrompts', hidePromptCallback);
         ctb.register_callback('hide_code.hideOutputs', hideOutputCallback);
@@ -312,8 +312,13 @@ function ($, celltoolbar, Jupyter){
         	toggleHideCode(cell);
         	toggleHideOutput(cell);
         });
+        console.log('hide_code setup complete');
 	}
 	
-	setup();
-	console.log('hide_code setup complete');
+	// setup();
+	
+
+	return {
+        load_ipython_extension: load_ipython_extension
+};
 });
