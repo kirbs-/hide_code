@@ -13,3 +13,7 @@ install:
   - pip install jupyter
   - pip install pdfkit
 # command to run tests
+script: 
+  - jupyter nbextension install --py hide_code --sys-prefix
+  - jupyter nbextension enable --py hide_code --sys-prefix
+  - juypter serverextension enable -py hide_code --sys-prefix
