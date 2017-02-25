@@ -12,6 +12,8 @@ hide_code is an extension for Jupyter/IPython notebooks to selectively hide code
 3. `jupyter nbextension enable --py hide_code`
 4. `jupyter server_extension enable --py hide_code`
 
+Note: add `--sys-prefix` to jupyter nbextension to install into virtualenv or conda environment.
+
 ## Upgrading from 0.3.1?
 Versions prior to 0.4 were installed by bootstrapping custom.js and jupyter configuration files. Pip uninstall does not remove these files. Upgrade to 0.4, then run `python -c "import hide_code; hide_code.uninstall_bootrapped_files()"`.
 
