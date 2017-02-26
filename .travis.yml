@@ -10,8 +10,13 @@ python:
   - "pypy"
 # command to install dependencies
 install:
+  # force six to install first as it's a dependicy of simplegeneric and simplegeneric is erroring.
+  - pip install six
   - pip install jupyter
   - pip install pdfkit
+  - pip install -e .
 # command to run tests
 script: 
-  - python -c 'import hide_code.hide_code as hc; hc.install()'
+  - jupyter nbextension install --py hide_code --sys-prefix
+  - jupyter nbextension enable --py hide_code --sys-prefix
+  - jupyter serverextension enable --py hide_code --sys-prefix

@@ -1,32 +1,32 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
-from setuptools.command.install import install as _install 
+# from setuptools.command.install import install as _install 
 # To use a consistent encoding
 from codecs import open
 from os import path
 import sys
 import os
 
-here = path.abspath(path.dirname(__file__))
+# here = path.abspath(path.dirname(__file__))
 
-def _post_install(dir):
-    from hide_code import hide_code
-    hide_code.install()
+# def _post_install(dir):
+#     from hide_code import hide_code
+#     hide_code.install()
 
 
-class install(_install):
-    description = 'Installs hide_code.js, hide_code export handlers and server extension.'
-    # user_options = [{'auto-load=', None, 'Do not auto-load server extensions.'}]
+# class install(_install):
+#     description = 'Installs hide_code.js, hide_code export handlers and server extension.'
+#     # user_options = [{'auto-load=', None, 'Do not auto-load server extensions.'}]
 
-    # def initialize_options(self):
-    #     self.auto_load = True
+#     # def initialize_options(self):
+#     #     self.auto_load = True
 
-    # def finalize_options(self):
-    #     _install.finalize_options()
+#     # def finalize_options(self):
+#     #     _install.finalize_options()
 
-    def run(self):
-        _install.run(self)
-        self.execute(_post_install, (self.install_lib, ), msg="Running post install task...")
+#     def run(self):
+#         _install.run(self)
+#         self.execute(_post_install, (self.install_lib, ), msg="Running post install task...")
 
 
 
@@ -40,7 +40,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.3.1',
+    version='0.4.0',
 
     description='A Jupyter notebook extension to hide code, prompts and outputs.',
     long_description=long_description,
@@ -90,7 +90,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['jupyter', 'pdfkit'],
+    install_requires=['jupyter', 'pdfkit', 'nbconvert<5.0'],
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
@@ -110,7 +110,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     # entry_po
     # scripts=['hide_code/hide_code.py'],
-    cmdclass={'install': install},
+    # cmdclass={'install': install},
 
     entry_points={
         'nbconvert.exporters': [

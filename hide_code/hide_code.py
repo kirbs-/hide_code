@@ -62,6 +62,21 @@ class HideCodeLatexPDFExportHandler(IPythonHandler):
 def __main__():
 	install()
 
+def _jupyter_nbextension_paths():
+    return [dict(
+        section="notebook",
+        # the path is relative to the `my_fancy_module` directory
+        src="",
+        # directory in the `nbextension/` namespace
+        dest="hide_code",
+        # _also_ in the `nbextension/` namespace
+        require="hide_code/hide_code")]
+
+def _jupyter_server_extension_paths():
+    return [{
+        "module": "hide_code"
+    }]
+
 def load_jupyter_server_extension(nb_app):
 	nb_app.log.info("hide_code: Attempting to load hid_code export handler extensions.")
 	web_app = nb_app.web_app
@@ -79,7 +94,86 @@ def load_jupyter_server_extension(nb_app):
 	nb_app.log.info("hide_code: Hide_code export handler extensions loaded.")
 
 
-def install(nb_path=None, server_config=True, DEBUG=False):
+def uninstall_bootstrapped_files(nb_path=None, server_config=True, DEBUG=False):
+	install_path = None
+	print('Starting hide_code.js removal...')
+	current_dir = path.abspath(path.dirname(__file__))
+	config_dirs = j_path.jupyter_config_path()
+	notebook_module_path = Utils.get_notebook_module_dir()
+
+	# check for config directory with a "custom" folder
+	# TODO update this logic to check if custom.js file exists
+	for dir in config_dirs:
+		custom_dir = path.join(dir, "custom")
+		if path.isdir(custom_dir):
+			install_path = custom_dir
+			break
+
+	# last ditch effort in case jupyter config directories don't contain custom/custom.js		
+	if install_path == None:	
+		print("No config directories contain \"custom\" folder. Trying Jupyter notebook module path...")	
+		install_path = path.join(notebook_module_path, "static", "custom")
+	
+
+	if nb_path != None:
+		install_path = nb_path
+		print("Using argument supplied path: " + install_path)
+
+	if DEBUG:
+		print(install_path)
+
+	# copy js into static/custom directory in Jupyter/iPython directory
+	if path.isdir(install_path):
+		custom_js = path.join(install_path, 'custom.js')
+		hide_code_js = path.join(install_path, 'hide_code.js')
+
+		try:
+			if path.exists(custom_js):
+				with open(path.join(current_dir, "auto-load.txt")) as auto:
+					auto_load_txt = auto.read();
+					auto_loaded = False
+					text = None
+
+					# check if auto-load.txt is already in custom.js
+					with open(custom_js, 'r') as customJS:
+						text = customJS.read()
+						if auto_load_txt in text:
+							text = text.replace(auto_load_txt, '')
+							auto_loaded = True
+
+					if auto_loaded:
+						with open(custom_js, 'w') as customJS:
+							customJS.write(text)
+							print("Successfully removed auto-loaded javascript.")
+
+			if path.exists(hide_code_js):
+				os.remove(hide_code_js)
+				print("Successfully removed hide_code.js")
+
+		except:
+			pass
+
+	if server_config:
+		print("Attempting to remove auto-loading for hide_code export handlers.")
+		try:
+			# Activate the Python server extension
+			server_cm = ConfigManager(config_dir=j_path.jupyter_config_dir())
+			cfg = server_cm.get('jupyter_notebook_config')
+			server_extensions = (cfg.setdefault('NotebookApp', {})
+				.setdefault('server_extensions', [])
+				)
+			extension = 'hide_code.hide_code'
+			if extension in server_extensions:
+				cfg['NotebookApp']['server_extensions'] = None
+				server_cm.update('jupyter_notebook_config', cfg)
+				print('Successfully removed auto-loaded hide_code export handlers.')
+			else:
+				print("No hide_code server extensions to remove.")
+		except:
+			print("No hide_code server extensions to remove.")
+
+
+def install_bootstrapped_files(nb_path=None, server_config=True, DEBUG=False):
 	"""
 	Installs javascript and exporting server extensions in Jupyter notebook.
 
