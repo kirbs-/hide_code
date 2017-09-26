@@ -272,6 +272,7 @@ function ($, celltoolbar, Jupyter){
         getHideCodeMenu().append(dropdownMenuItem('PDF Export (HTML)', exportLink('pdf'), 'HTML PDF exporter.'));
         getHideCodeMenu().append(dropdownMenuItem('PDF Export (Latex)', exportLink('latexpdf'), 'Latex PDF exporter.'));
         getHideCodeMenu().append(dropdownMenuItem('HTML Export', exportLink('html'), 'HTML exporter.'));
+        getHideCodeMenu().append(dropdownMenuItem('Latex Export', exportLink('latex'), 'Latex exporter.'));
     }
 
     function getMenuBar(){
@@ -320,5 +321,5 @@ function ($, celltoolbar, Jupyter){
 
 	return {
         load_ipython_extension: load_ipython_extension
-};
+    }
 });
