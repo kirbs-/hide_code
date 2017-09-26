@@ -273,6 +273,7 @@ function ($, celltoolbar, Jupyter){
         getHideCodeMenu().append(dropdownMenuItem('PDF Export (Latex)', exportLink('latexpdf'), 'Latex PDF exporter.'));
         getHideCodeMenu().append(dropdownMenuItem('HTML Export', exportLink('html'), 'HTML exporter.'));
         getHideCodeMenu().append(dropdownMenuItem('Latex Export', exportLink('latex'), 'Latex exporter.'));
+        getHideCodeMenu().append(dropdownMenuItem('Slides Export', exportLink('slides'), 'Slides exporter.'));
     }
 
     function getMenuBar(){

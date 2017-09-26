@@ -9,6 +9,7 @@ from traitlets.config import Config
 from .hide_code_html_exporter import HideCodeHTMLExporter
 from .hide_code_pdf_exporter import HideCodePDFExporter
 from .hide_code_latex_exporter import HideCodeLatexExporter
+from .hide_code_slides_exporter import HideCodeSlidesExporter
 import pdfkit
 from notebook.services.config import ConfigManager
 from .hide_code_config import HideCodeConfig as hc_config
@@ -77,8 +78,22 @@ class HideCodeLatexExportHandler(IPythonHandler):
         self.finish()
 
 
-def __main__():
-    install()
+class HideCodeSlidesExportHandler(IPythonHandler):
+    def get(self, *args):
+        self.log.info("hide_code: Starting Slides export for {}".format(args[-1]))
+        with open(ipynb_file_name(args)) as f:
+            nb = nbformat.reads(f.read(), as_version=4)
+            exporter = HideCodeSlidesExporter()
+            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
+        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.html')
+        self.flush()
+        self.write(output)
+        self.log.info("hide_code: Finished Slides export for {}".format(args[-1]))
+        self.finish()
+
+
+# def __main__():
+    # install()
 
 
 def _jupyter_nbextension_paths():
@@ -111,7 +126,8 @@ def load_jupyter_server_extension(nb_app):
         (route_pattern_for('html'), HideCodeHTMLExportHandler),
         (route_pattern_for('pdf'), HideCodePDFExportHandler),
         (route_pattern_for('latexpdf'), HideCodeLatexPDFExportHandler),
-        (route_pattern_for('latex'), HideCodeLatexExportHandler)
+        (route_pattern_for('latex'), HideCodeLatexExportHandler),
+        (route_pattern_for('slides'), HideCodeSlidesExportHandler)
     ])
     nb_app.log.info("hide_code: Hide_code export handler extensions loaded.")
 

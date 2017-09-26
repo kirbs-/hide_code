@@ -1,4 +1,4 @@
-{%- extends 'full.tpl' -%}
+{%- extends 'basic.tpl' -%}
 
 {%-block html_head-%}
 <style type="text/css">
