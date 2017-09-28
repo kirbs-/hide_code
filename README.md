@@ -22,6 +22,6 @@ Visit the [Wiki](https://github.com/kirbs-/hide_code/wiki).
 
 ## Requirements
 * Jupyter notebook 4.x+
-* Jupyter nbconvert ~>4.2+ if using nbconvert command line exporting. nbconvert 5.x does not work with hide_code.
+* Jupyter nbconvert ~>4.2+ if using nbconvert command line exporting.
 * pdfkit & [wkhtmltopdf](http://wkhtmltopdf.org/)
 * Python 2.7 or 3.3+

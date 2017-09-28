@@ -15,7 +15,7 @@ from notebook.services.config import ConfigManager
 from .hide_code_config import HideCodeConfig as hc_config
 from .utils import Utils
 
-notebook_dir = ""
+notebook_dir = []
 base_url = ""
 
 
@@ -91,8 +91,7 @@ class HideCodeSlidesExportHandler(IPythonHandler):
         self.log.info("hide_code: Finished Slides export for {}".format(args[-1]))
         self.finish()
 
-
-# def __main__():
+    # def __main__():
     # install()
 
 
@@ -116,7 +115,8 @@ def _jupyter_server_extension_paths():
 def load_jupyter_server_extension(nb_app):
     nb_app.log.info("hide_code: Attempting to load hid_code export handler extensions.")
     web_app = nb_app.web_app
-    notebook_dir = nb_app.notebook_dir
+    global notebook_dir
+    notebook_dir.append(nb_app.notebook_dir)
     host_pattern = '.*$'
     global base_url
     base_url = web_app.settings['base_url']
@@ -305,17 +305,18 @@ def route_pattern_for(exporter):
 
 def notebook_name(params):
     """
-	Returns notebook name without .ipynb extension.
-	"""
+    Returns notebook name without .ipynb extension.
+    """
     args = [param.replace('/', '') for param in params if param is not None]
     return args[-1][:-6]
 
 
 def ipynb_file_name(params):
     """
-	Returns OS path to notebook based on route parameters. 
-	"""
-    p = [param.replace('/', '') for param in params if param is not None]
+    Returns OS path to notebook based on route parameters.
+    """
+    global notebook_dir
+    p = notebook_dir + [param.replace('/', '') for param in params if param is not None]
     return path.join(*p)
 
 
@@ -343,5 +344,5 @@ def setup_info():
                 custom_js = custom_js + line + ' '
 
     return (
-    "Installation dir: {0}\nConfiguration dir: {1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
-    .format(Utils.get_module_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
+        "Installation dir: {0}\nConfiguration dir: {1}\nExport handler extensions: {2}\nHide Code files: {3}\nCustom JS contents: {4}"
+            .format(Utils.get_module_dir(), j_path.jupyter_config_dir(), ext, files, custom_js))
