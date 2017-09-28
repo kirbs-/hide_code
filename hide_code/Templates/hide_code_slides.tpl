@@ -1,4 +1,4 @@
-{%- extends 'hide_code.tpl' -%}
+{%- extends 'hide_code_basic.tpl' -%}
 {% from 'mathjax.tpl' import mathjax %}
 
 {%- block any_cell scoped -%}
