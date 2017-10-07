@@ -108,39 +108,49 @@ function ($, celltoolbar, Jupyter){
 	}
 
 	/**
+	* Export handlers
+	**/
+
+    function exportHTML(){
+        window.location = exportLink("html");
+        Jupyter.notebook.kernel.reconnect();
+    }
+
+    function exportPDF(){
+        window.location = exportLink("pdf");
+        Jupyter.notebook.kernel.reconnect();
+    }
+
+    function exportPDFLatex(){
+        window.location = exportLink("latexpdf");
+        Jupyter.notebook.kernel.reconnect();
+    }
+
+	/**
 	* Add a toolbar button to toggle visibility of all code cells, input/output prompts, and remove any highlighting for the selected cell.
 	**/
 	function addHideCodeButtonToToolbar(){
-		IPython.toolbar.add_buttons_group([
-		    {
-		     'label' : 'Hide/show code',
-		     'icon' : 'fa-code',
-		     'callback' : toggleAllPromptsAndCode
-		    },
-		    {
-		    	'label' : 'Export to HTML',
-		    	'icon' : 'fa-file-text-o',
-		    	'callback' : function (){
-		    		window.location = exportLink("html");
-		    		Jupyter.notebook.kernel.reconnect();
-		    	}
-		    },
-		    {
-		    	'label' : 'Export to PDF via HTML',
-		    	'icon' : 'fa-file-pdf-o',
-		    	'callback' : function (){
-		    		window.location = exportLink("pdf");
-		    		Jupyter.notebook.kernel.reconnect();
-		    	}
-		    },
-		    {
-		    	'label' : 'Export to PDF via Latex',
-		    	'icon' : 'fa-file-o',
-		    	'callback' : function (){
-		    		window.location = exportLink("latexpdf");
-		    		Jupyter.notebook.kernel.reconnect();
-		    	}
-		    }
+		Jupyter.toolbar.add_buttons_group([
+		    Jupyter.actions.register ({
+                'help': 'Toggle everything',
+                'icon': 'fa-code',
+                'handler': toggleAllPromptsAndCode
+		    }, 'hide_code:toggle_all'),
+            Jupyter.actions.register ({
+                'help': 'Export to HTML',
+                'icon': 'fa-file-text-o',
+                'handler': exportHTML
+		    }, 'hide_code:export_html'),
+		    Jupyter.actions.register ({
+                'help': 'Export to PDF via HTML',
+                'icon': 'fa-file-pdf-o',
+                'handler': exportPDF
+		    }, 'hide_code:export_pdf'),
+		    Jupyter.actions.register ({
+                'help': 'Export to PDF via Latex',
+                'icon': 'fa-file-o',
+                'handler': exportPDFLatex
+		    }, 'hide_code:export_pdflatex')
 		  ]);
 	}
 
