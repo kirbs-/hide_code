@@ -1,7 +1,10 @@
 language: python
 python:
   - "2.7"
-  - "3.3"
+# Building 3.3 fails;
+# ImportError: Tornado requires an up-to-date SSL module. This means Python 2.7.9+ or 3.4+ (although some distributions
+# have backported the necessary changes to older versions).
+#  - "3.3"
   - "3.4"
   - "3.5"
   - "3.6"
@@ -16,7 +19,7 @@ install:
   - pip install pdfkit
   - pip install -e .
 # command to run tests
-script: 
+script:
   - jupyter nbextension install --py hide_code --sys-prefix
   - jupyter nbextension enable --py hide_code --sys-prefix
   - jupyter serverextension enable --py hide_code --sys-prefix
