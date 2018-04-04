@@ -51,7 +51,7 @@
             {% block error %} {{ super() }} {% endblock error %}
         {%- endif -%}
     {%- elif output.text -%}
-        {{ super() }}
+		{% block stream_stdout -%} {{ super() }} {% endblock stream_stdout -%}
     {%- endif -%}
 {%- endif -%}
 </div>
