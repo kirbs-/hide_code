@@ -9,3 +9,5 @@ hide_code.sublime-project
 hide_code.sublime-workspace
 /hide_code/test/*.ipynb
 /hide_code/test/.ipynb_checkpoints/*
+*.iml
+*.idea

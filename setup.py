@@ -7,29 +7,6 @@ from os import path
 import sys
 import os
 
-# here = path.abspath(path.dirname(__file__))
-
-# def _post_install(dir):
-#     from hide_code import hide_code
-#     hide_code.install()
-
-
-# class install(_install):
-#     description = 'Installs hide_code.js, hide_code export handlers and server extension.'
-#     # user_options = [{'auto-load=', None, 'Do not auto-load server extensions.'}]
-
-#     # def initialize_options(self):
-#     #     self.auto_load = True
-
-#     # def finalize_options(self):
-#     #     _install.finalize_options()
-
-#     def run(self):
-#         _install.run(self)
-#         self.execute(_post_install, (self.install_lib, ), msg="Running post install task...")
-
-
-
 # Get the long description from the relevant file
 with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
@@ -40,7 +17,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.5.0',
+    version='0.5.1',
 
     description='A Jupyter notebook extension to hide code, prompts and outputs.',
     long_description=long_description,
@@ -117,9 +94,9 @@ setup(
         'nbconvert.exporters': [
             'hide_code_html = hide_code:HideCodeHTMLExporter',
             'hide_code_pdf = hide_code:HideCodePDFExporter',
-            'hide_code_latexpdf = hide_code.HideCodeLatexPDFExporter',
-            'hide_code_latex = hide_code.HideCodeLatexExporter',
-            'hide_code_slides = hide_code.HideCodeSlidesExporter'
+            'hide_code_latexpdf = hide_code:HideCodeLatexPDFExporter',
+            'hide_code_latex = hide_code:HideCodeLatexExporter',
+            'hide_code_slides = hide_code:HideCodeSlidesExporter'
         ],
     }
 )
