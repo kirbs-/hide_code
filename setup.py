@@ -17,7 +17,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.5.1',
+    version='0.5.2',
 
     description='A Jupyter notebook extension to hide code, prompts and outputs.',
     long_description=long_description,
@@ -94,7 +94,7 @@ setup(
         'nbconvert.exporters': [
             'hide_code_html = hide_code:HideCodeHTMLExporter',
             'hide_code_pdf = hide_code:HideCodePDFExporter',
-            'hide_code_latexpdf = hide_code:HideCodeLatexPDFExporter',
+            # 'hide_code_latexpdf = hide_code:HideCodeLatexPDFExporter',
             'hide_code_latex = hide_code:HideCodeLatexExporter',
             'hide_code_slides = hide_code:HideCodeSlidesExporter'
         ],
