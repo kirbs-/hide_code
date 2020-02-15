@@ -54,6 +54,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
 
     # What does your project relate to?
@@ -74,7 +76,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'hide_code': ['*.js','*.txt', os.path.join('Templates', '*'), 'hide_code_config.json'],
+        'hide_code': ['*.js','*.txt', os.path.join('Templates', '*'), 'hide_code_config.json', 'LICENSE'],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
