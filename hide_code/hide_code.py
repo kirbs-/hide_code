@@ -15,6 +15,7 @@ from notebook.services.config import ConfigManager
 from .hide_code_config import HideCodeConfig as hc_config
 from .utils import Utils
 
+
 notebook_dir = []
 base_url = ""
 
@@ -27,7 +28,7 @@ class HideCodeHTMLExportHandler(IPythonHandler):
             exporter = HideCodeHTMLExporter()
             output_html, resources = exporter.from_notebook_node(nb)
         self.set_header('Content-Type', 'text/html')
-        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.html')
+        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'html'))
         self.flush()
         self.write(output_html)
         self.log.info("hide_code: Finished HTML export for {}".format(args[-1]))
@@ -43,7 +44,7 @@ class HideCodePDFExportHandler(IPythonHandler):
             output_html, resources = exporter.from_notebook_node(nb)
             output = pdfkit.from_string(output_html, False)
         self.set_header('Content-Type', 'application/pdf')
-        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.pdf')
+        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'pdf'))
         self.flush()
         self.write(output)
         self.log.info("hide_code: Finished PDF export for {}".format(args[-1]))
@@ -57,7 +58,7 @@ class HideCodeLatexPDFExportHandler(IPythonHandler):
             nb = nbformat.reads(f.read(), as_version=4)
             exporter = HideCodePDFExporter()
             output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
-        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.pdf')
+        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'pdf'))
         self.flush()
         self.write(output)
         self.log.info("hide_code: Finished Latex PDF export for {}".format(args[-1]))
@@ -71,7 +72,7 @@ class HideCodeLatexExportHandler(IPythonHandler):
             nb = nbformat.reads(f.read(), as_version=4)
             exporter = HideCodeLatexExporter()
             output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
-        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.tex')
+        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'tex'))
         self.flush()
         self.write(output)
         self.log.info("hide_code: Finished Latex export for {}".format(args[-1]))
@@ -85,7 +86,7 @@ class HideCodeSlidesExportHandler(IPythonHandler):
             nb = nbformat.reads(f.read(), as_version=4)
             exporter = HideCodeSlidesExporter()
             output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
-        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args) + '.html')
+        self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'html'))
         self.flush()
         self.write(output)
         self.log.info("hide_code: Finished Slides export for {}".format(args[-1]))
@@ -303,12 +304,13 @@ def route_pattern_for(exporter):
     return url_path_join(base_url, 'notebooks/([^/]+)' + pattern, 'export', exporter)
 
 
-def notebook_name(params):
+def notebook_name(params, filetype):
     """
-    Returns notebook name without .ipynb extension.
+    Returns URL encoded notebook name without .ipynb extension.
     """
     args = [param.replace('/', '') for param in params if param is not None]
-    return args[-1][:-6]
+    print(args)
+    return '"{}.{}"'.format(args[-1][:-6], filetype)
 
 
 def ipynb_file_name(params):
