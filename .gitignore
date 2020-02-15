@@ -11,3 +11,4 @@ hide_code.sublime-workspace
 /hide_code/test/.ipynb_checkpoints/*
 *.iml
 *.idea
+*ipynb
