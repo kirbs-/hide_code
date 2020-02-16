@@ -19,9 +19,14 @@ install:
   - pip install six
   - pip install jupyter
   - pip install pdfkit
-  - pip install -e .
+  - pip install .
 # command to run tests
-# script:
+script:
+  - jupyter nbconvert hide_code/test/utf-8\ test.ipynb --to hide_code_html
+  - jupyter nbconvert hide_code/test/utf-8\ test.ipynb --to hide_code_pdf
+  - jupyter nbconvert hide_code/test/utf-8\ test.ipynb --to hide_code_latexpdf
+  - jupyter nbconvert hide_code/test/utf-8\ test.ipynb --to hide_code_latex
+  - jupyter nbconvert hide_code/test/utf-8\ test.ipynb --to hide_code_slides
 #   - jupyter nbextension install --py hide_code --sys-prefix
 #   - jupyter nbextension enable --py hide_code --sys-prefix
 #   - jupyter serverextension enable --py hide_code --sys-prefix
