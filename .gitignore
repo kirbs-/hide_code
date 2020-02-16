@@ -14,3 +14,5 @@ hide_code.sublime-workspace
 *ipynb
 *.pdf
 *.html
+.vscode
+.ipynb_checkpoints
