@@ -155,7 +155,8 @@ function ($, celltoolbar, Jupyter){
 	}
 
 	function exportLink(path){
-		return window.location.origin + window.location.pathname + "/export/" + path;
+		// return window.location.origin + window.location.pathname + "/export/" + path;
+		return window.location.origin + '/notebooks/' + Jupyter.notebook.notebook_path + "/export/" + path;
 	}
 
 	var hideCodeCallback = ctb.utils.checkbox_ui_generator(	'Hide Code ', hideCodeSetter, hideCodeGetter);
@@ -326,11 +327,19 @@ function ($, celltoolbar, Jupyter){
         });
         console.log('hide_code setup complete');
 	}
-	
-	// setup();
-	
+
+	$(document).on('DOMSubtreeModified', '.filename', function(){
+		// var filename = $('.filename').text();
+
+		$('#hide_code_menu_list a').each(function(){
+			var path =  $(this).attr('href').split('/').pop();
+			$(this).attr('href', exportLink(path));
+		});
+	});
+
 
 	return {
         load_ipython_extension: load_ipython_extension
     }
 });
+
