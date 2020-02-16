@@ -11,7 +11,7 @@ python:
   - "3.8"
   # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
   # maintainers to fix their pypy-dev package.
-  - "pypy"
+  # - "pypy"
 # command to install dependencies
 install:
   # force six to install first as it's a dependicy of simplegeneric and simplegeneric is erroring.
