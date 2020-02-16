@@ -12,3 +12,5 @@ hide_code.sublime-workspace
 *.iml
 *.idea
 *ipynb
+*.pdf
+*.html
