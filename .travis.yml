@@ -21,7 +21,7 @@ install:
   - pip install .
 # command to run tests
 script:
-  - jupyter nbconvert "$(python -c 'import site; print(site.getsitepackages()[0])')/hide_code/hide_code/test/utf-8 test.ipynb" --to hide_code_html
+  - jupyter nbconvert "/home/travis/virtualenv/python3.4.8/lib/python3.4/site-packages/hide_code/hide_code/test/utf-8 test.ipynb" --to hide_code_html
   - jupyter nbconvert "$(python -c 'import site; print(site.getsitepackages()[0])')/hide_code/hide_code/test/utf-8 test.ipynb" --to hide_code_pdf
   - jupyter nbconvert "$(python -c 'import site; print(site.getsitepackages()[0])')/hide_code/hide_code/test/utf-8 test.ipynb" --to hide_code_latexpdf
   - jupyter nbconvert "$(python -c 'import site; print(site.getsitepackages()[0])')/hide_code/hide_code/test/utf-8 test.ipynb" --to hide_code_latex
