@@ -1,9 +1,10 @@
-from .hide_code_html_exporter import HideCodeHTMLExporter
-from .hide_code_pdf_exporter import HideCodePDFExporter
-from .hide_code_preprocessor import HideCodePreprocessor
-from .hide_code_latex_exporter import HideCodeLatexExporter
-from .hide_code_slides_exporter import HideCodeSlidesExporter
-from .hide_code import *
-from .hide_code_config import HideCodeConfig
-from .utils import Utils
-from .hide_code import _jupyter_nbextension_paths, _jupyter_server_extension_paths
+from hide_code.hide_code_html_exporter import HideCodeHTMLExporter
+from hide_code.hide_code_pdf_exporter import HideCodePDFExporter
+from hide_code.hide_code_latexpdf_exporter import HideCodeLatexPDFExporter
+from hide_code.hide_code_preprocessor import HideCodePreprocessor
+from hide_code.hide_code_latex_exporter import HideCodeLatexExporter
+from hide_code.hide_code_slides_exporter import HideCodeSlidesExporter
+from hide_code.hide_code import *
+from hide_code.hide_code_config import HideCodeConfig
+from hide_code.utils import Utils
+from hide_code.hide_code import _jupyter_nbextension_paths, _jupyter_server_extension_paths

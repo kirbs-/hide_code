@@ -6,14 +6,15 @@ from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler
 import nbformat
 from traitlets.config import Config
-from .hide_code_html_exporter import HideCodeHTMLExporter
-from .hide_code_pdf_exporter import HideCodePDFExporter
-from .hide_code_latex_exporter import HideCodeLatexExporter
-from .hide_code_slides_exporter import HideCodeSlidesExporter
+from hide_code.hide_code_html_exporter import HideCodeHTMLExporter
+from hide_code.hide_code_pdf_exporter import HideCodePDFExporter
+from hide_code.hide_code_latexpdf_exporter import HideCodeLatexPDFExporter
+from hide_code.hide_code_latex_exporter import HideCodeLatexExporter
+from hide_code.hide_code_slides_exporter import HideCodeSlidesExporter
 import pdfkit
 from notebook.services.config import ConfigManager
-from .hide_code_config import HideCodeConfig as hc_config
-from .utils import Utils
+from hide_code.hide_code_config import HideCodeConfig as hc_config
+from hide_code.utils import Utils
 
 
 notebook_dir = []
@@ -40,13 +41,13 @@ class HideCodePDFExportHandler(IPythonHandler):
         self.log.info("hide_code: Starting PDF export for {}".format(args[-1]))
         with open(ipynb_file_name(args), encoding="utf-8") as f:
             nb = nbformat.reads(f.read(), as_version=4)
-            exporter = HideCodeHTMLExporter()
+            exporter = HideCodePDFExporter()
             output_html, resources = exporter.from_notebook_node(nb)
-            output = pdfkit.from_string(output_html, False)
+            # output = pdfkit.from_string(output_html, False)
         self.set_header('Content-Type', 'application/pdf')
         self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'pdf'))
         self.flush()
-        self.write(output)
+        self.write(output_html)
         self.log.info("hide_code: Finished PDF export for {}".format(args[-1]))
         self.finish()
 
@@ -56,8 +57,8 @@ class HideCodeLatexPDFExportHandler(IPythonHandler):
         self.log.info("hide_code: Starting Latex PDF export for {}".format(args[-1]))
         with open(ipynb_file_name(args), encoding="utf-8") as f:
             nb = nbformat.reads(f.read(), as_version=4)
-            exporter = HideCodePDFExporter()
-            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
+            exporter = HideCodeLatexPDFExporter()
+            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args, 'pdf')}})
         self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'pdf'))
         self.flush()
         self.write(output)
@@ -71,7 +72,7 @@ class HideCodeLatexExportHandler(IPythonHandler):
         with open(ipynb_file_name(args), encoding="utf-8") as f:
             nb = nbformat.reads(f.read(), as_version=4)
             exporter = HideCodeLatexExporter()
-            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
+            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args, 'tex')}})
         self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'tex'))
         self.flush()
         self.write(output)
@@ -85,7 +86,7 @@ class HideCodeSlidesExportHandler(IPythonHandler):
         with open(ipynb_file_name(args), encoding="utf-8") as f:
             nb = nbformat.reads(f.read(), as_version=4)
             exporter = HideCodeSlidesExporter()
-            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args)}})
+            output, resources = exporter.from_notebook_node(nb, resources={"metadata": {"name": notebook_name(args, 'html')}})
         self.set_header('Content-Disposition', 'attachment; filename=' + notebook_name(args, 'html'))
         self.flush()
         self.write(output)

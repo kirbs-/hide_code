@@ -1,15 +1,30 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
-# from setuptools.command.install import install as _install 
+from setuptools.command.install import install
 # To use a consistent encoding
 from codecs import open
 from os import path
 import sys
 import os
+import notebook
+import notebook.serverextensions as ns
 
 # Get the long description from the relevant file
 with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+    def run(self):
+        install.run(self)
+        # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
+        print('Starting hide_code installation')
+        # install extension
+        notebook.nbextensions.install_nbextension_python('hide_code', sys_prefix=True)
+        # enable notebook extension
+        notebook.nbextensions.enable_nbextension_python('hide_code', sys_prefix=True)
+        # enable server extension
+        ns.toggle_serverextension_python('hide_code', enabled=True, sys_prefix=True)
 
 setup(
     name='hide_code',
@@ -17,7 +32,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.5.3',
+    version='0.5.5',
 
     description='A Jupyter notebook extension to hide code, prompts and outputs.',
     long_description=long_description,
@@ -76,7 +91,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'hide_code': ['*.js','*.txt', os.path.join('Templates', '*'), 'hide_code_config.json', 'LICENSE'],
+        'hide_code': ['*.js','*.txt', os.path.join('Templates', '*'), 'hide_code_config.json', 'LICENSE', os.path.join('test', '*')],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
@@ -96,7 +111,7 @@ setup(
         'nbconvert.exporters': [
             'hide_code_html = hide_code:HideCodeHTMLExporter',
             'hide_code_pdf = hide_code:HideCodePDFExporter',
-            # 'hide_code_latexpdf = hide_code:HideCodeLatexPDFExporter',
+            'hide_code_latexpdf = hide_code:HideCodeLatexPDFExporter',
             'hide_code_latex = hide_code:HideCodeLatexExporter',
             'hide_code_slides = hide_code:HideCodeSlidesExporter'
         ],
