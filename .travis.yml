@@ -20,7 +20,7 @@ install:
   - pip install pdfkit
   - pip install .
   - sudo apt-get update
-  - sudo apt-get install texlive-xetex xvfb libfontconfig wkhtmltopdf pandoc texlive-fonts-recommended texlive-generic-recommended texlive-latex-extra texlive-generic-extra
+  - sudo apt-get install texlive-xetex xvfb libfontconfig wkhtmltopdf pandoc texlive-fonts-recommended texlive-generic-recommended texlive-latex-extra texlive-generic-extra lmodern
 
 # command to run tests
 script:
