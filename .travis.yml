@@ -20,12 +20,13 @@ install:
   - pip install pdfkit
   - pip install .
   - sudo apt-get update
-  - sudo apt-get install texlive-xetex xvfb libfontconfig wkhtmltopdf
+  - sudo apt-get install texlive-xetex xvfb libfontconfig wkhtmltopdf pandoc
 
 # command to run tests
 script:
   - jupyter nbconvert "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/hide_code/test/utf-8 test.ipynb" --to hide_code_slides
-  - jupyter nbconvert "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/hide_code/test/utf-8 test.ipynb" --to hide_code_pdf
+  # wkhtmltopdf has a bug in Ubuntu 16.04 apt package https://unix.stackexchange.com/questions/192642/wkhtmltopdf-qxcbconnection-could-not-connect-to-display
+  # - jupyter nbconvert "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/hide_code/test/utf-8 test.ipynb" --to hide_code_pdf
   - jupyter nbconvert "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/hide_code/test/utf-8 test.ipynb" --to hide_code_html
   - jupyter nbconvert "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/hide_code/test/utf-8 test.ipynb" --to hide_code_latex
   - jupyter nbconvert "$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/hide_code/test/utf-8 test.ipynb" --to hide_code_latexpdf
