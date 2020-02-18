@@ -2,7 +2,7 @@
 ![PyPI version](https://badge.fury.io/py/hide_code.svg) ![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg) 
 Release: ![Travis release build](https://travis-ci.org/kirbs-/hide_code.svg?branch=master) Dev: ![Dev Build Status](https://travis-ci.org/kirbs-/hide_code.svg?branch=dev)
 
-hide_code is a Jupyter notebook extension to selectively hide code, prompts and outputs with PDF and HTML exporting support. Check out the demo with [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/kirbs-/hide_code/dev?filepath=demo.ipynb)
+hide_code is a Jupyter notebook extension to selectively hide code, prompts and outputs with PDF and HTML exporting support. Check out the demo with [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/kirbs-/hide_code/master?filepath=demo.ipynb)
 
 ![demo](/images/demo.gif)
 
