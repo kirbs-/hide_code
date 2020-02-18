@@ -1,0 +1,10 @@
+texlive-xetex 
+xvfb 
+libfontconfig 
+wkhtmltopdf 
+pandoc 
+texlive-fonts-recommended 
+texlive-generic-recommended 
+texlive-latex-extra 
+texlive-generic-extra 
+lmodern
