@@ -156,7 +156,10 @@ function ($, celltoolbar, Jupyter){
 
 	function exportLink(path){
 		// return window.location.origin + window.location.pathname + "/export/" + path;
-		return window.location.origin + '/notebooks/' + Jupyter.notebook.notebook_path + "/export/" + path;
+		// this is a hack to get the base pathname from the url. Need to do this so I can reset the export URLs
+		// when a notebook is renamed. 
+		var pathname = window.location.pathname.split('/').filter(e=> !Jupyter.notebook.notebook_path.split('/').includes(e)).join('/');
+		return window.location.origin + pathname + '/' + Jupyter.notebook.notebook_path + "/export/" + path;
 	}
 
 	var hideCodeCallback = ctb.utils.checkbox_ui_generator(	'Hide Code ', hideCodeSetter, hideCodeGetter);
