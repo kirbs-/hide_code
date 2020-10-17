@@ -4,11 +4,10 @@ python:
 # ImportError: Tornado requires an up-to-date SSL module. This means Python 2.7.9+ or 3.4+ (although some distributions
 # have backported the necessary changes to older versions).
 #  - "3.3"
-  - "3.4"
-  - "3.5"
   - "3.6"
   - "3.7"
   - "3.8"
+  - "3.9"
   # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
   # maintainers to fix their pypy-dev package.
   # - "pypy"
