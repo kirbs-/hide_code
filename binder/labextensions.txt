@@ -1,0 +1,6 @@
+# development install of hide_code_lab
+.
+
+# some additional recommended labextensions, uncomment to enable
+# @jupyter-widgets/jupyterlab-manager
+# @jupyterlab/toc
