@@ -1,0 +1,14 @@
+jupyter nbextension install hide_code --py --sys-prefix
+jupyter nbextension enable hide_code --py --sys-prefix
+jupyter serverextension enable hide_code --py --sys-prefix
+
+# hack to use allow headless wkhtmltopdf via xvfb on Ubuntu/Debian see: 
+# https://github.com/fomightez/jupyter_hide_code/blob/master/postBuild
+# https://github.com/JazzCore/python-pdfkit/wiki/Using-wkhtmltopdf-without-X-server 
+cd ~
+# enable xvfb with wkhtmltopdf as described here so it will work with pdfkit similar to as shown at https://github.com/JazzCore/python-pdfkit/wiki/Using-wkhtmltopdf-without-X-server and more like how I activated orca with xvfb at https://github.com/fomightez/orca-plotly-binderized/blob/master/postBuild 
+# When this works, it should allow the test at the last line of the code at https://github.com/JazzCore/python-pdfkit/wiki/Using-wkhtmltopdf-without-X-server , i.e., `wkhtmltopdf http://www.google.com output.pdf`, at least not give that it cannot connect to X display
+mkdir -p ~/.local/bin
+printf '#!/bin/bash \nxvfb-run --auto-servernum --server-args "-screen 0 640x480x24" /usr/bin/wkhtmltopdf  "$@"' > ~/.local/bin/wkhtmltopdf.sh
+chmod 777 ~/.local/bin/wkhtmltopdf.sh
+ln -s ~/.local/bin/wkhtmltopdf.sh ~/.local/bin/wkhtmltopdf

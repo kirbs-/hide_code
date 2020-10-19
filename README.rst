@@ -10,3 +10,4 @@ Release build
 hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and output. Make a notebook a code free document for exporting or presenting. Documentation at https://github.com/kirbs-/hide_code
 
 
+.. |hide_code-hits| image:: https://caspersci.uk.to/cgi-bin/hits.cgi?q=hide_code&style=social&r=https://github.com/kirbs-/hide_code&l=https://caspersci.uk.to/images/tqdm.png&f=https://raw.githubusercontent.com/tqdm/tqdm/master/images/logo.gif

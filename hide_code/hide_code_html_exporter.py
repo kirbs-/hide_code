@@ -25,7 +25,8 @@ class HideCodeHTMLExporter(HTMLExporter):
         `./templates/` so append it to the search path. (see next section)
         """
         return super(HideCodeHTMLExporter, self).template_path + [os.path.join(os.path.dirname(__file__), "Templates")]
+        # return [os.path.join(os.path.dirname(__file__), "Templates")]
 
-    # @default('default_template_path')
-    # def _default_template_path_default(self):
+    # @default('template_path')
+    # def _default_template_path(self):
     #     return os.path.join(os.path.dirname(__file__), "Templates")
