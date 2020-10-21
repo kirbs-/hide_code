@@ -24,7 +24,7 @@
     "type": "git",
     "url": "https://github.com/kirbs-/hide_code_lab.git"
   },
-  "scripts": { 
+  "scripts": {
     "build": "jlpm run build:lib",
     "build:labextension": "cd hide_code_lab && rimraf labextension && mkdirp labextension && cd labextension && npm pack ../..",
     "build:lib": "tsc",
@@ -33,25 +33,27 @@
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "clean:labextension": "rimraf hide_code_lab/labextension",
     "clean:all": "jlpm run clean:lib && jlpm run clean:labextension",
-
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
     "prepare": "jlpm run clean && jlpm run build",
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^2.0.0",
+    "@jupyterlab/application": "^2.2.5",
+    "@jupyterlab/apputils": "^2.2.5",
     "@jupyterlab/coreutils": "^4.0.0",
-    "@jupyterlab/services": "^5.0.0"
-
+    "@jupyterlab/notebook": "^2.2.6",
+    "@jupyterlab/services": "^5.0.0",
+    "@lumino/disposable": "^1.4.3",
+    "@lumino/widgets": "^1.14.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.2", 
-    "mkdirp": "^1.0.3", 
+    "eslint-plugin-prettier": "^3.1.2",
+    "mkdirp": "^1.0.3",
     "prettier": "1.16.4",
     "rimraf": "^2.6.1",
     "typescript": "~3.7.0"
@@ -59,17 +61,17 @@
   "sideEffects": [
     "style/*.css"
   ],
-  "jupyterlab": { 
+  "jupyterlab": {
     "discovery": {
-        "server": {
-          "managers": [
-            "pip"
-          ],
-          "base": {
-            "name": "hide_code_lab"
-          }
+      "server": {
+        "managers": [
+          "pip"
+        ],
+        "base": {
+          "name": "hide_code_lab"
         }
-    }, 
+      }
+    },
     "extension": true
   }
 }
