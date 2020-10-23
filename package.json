@@ -41,6 +41,7 @@
   "dependencies": {
     "@jupyterlab/application": "^2.2.5",
     "@jupyterlab/apputils": "^2.2.5",
+    "@jupyterlab/cells": "^2.2.6",
     "@jupyterlab/coreutils": "^4.0.0",
     "@jupyterlab/notebook": "^2.2.6",
     "@jupyterlab/services": "^5.0.0",

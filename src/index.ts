@@ -14,7 +14,16 @@ import {
   INotebookModel
 } from '@jupyterlab/notebook';
 
-import { PanelLayout } from '@lumino/widgets';
+import {
+    CodeCell
+} from '@jupyterlab/cells';
+
+import {
+    Widget,
+    PanelLayout
+} from '@lumino/widgets';
+
+// import { PanelLayout } from '@lumino/widgets';
 
 // import '../style/index.css';
 
@@ -30,69 +39,75 @@ export class HideCodeLabExtension
     panel: NotebookPanel,
     context: DocumentRegistry.IContext<INotebookModel>
   ): IDisposable {
-    const hideInputCode = () => {
-    //   NotebookActions.runAll(panel.content, context.sessionContext);
-
-    //   panel.content.widgets.forEach(cell => {
-    //     if (cell.model.type === 'code') {
-    //       const layout = cell.layout as PanelLayout;
-    //       layout.widgets[1].hide();
-    //     }
-    //   });
-      
-
+    const toggleInput = () => {      
       panel.content.widgets.filter(cell => panel.content.isSelectedOrActive(cell)).forEach(cell => {
         if (cell.model.type === 'code') {
-            const layout = cell.layout as PanelLayout;
-            layout.widgets[1].hide();
+            if (cell.inputArea.isHidden) {
+                cell.inputArea.show()
+            } else {
+                cell.inputArea.hide()
+            };
           }
       });
 
-      buttonHideInput.hide();
-      buttonShowInput.show();
-    };
-    const showInputCode = () => {
-    //   panel.content.widgets.forEach(cell => {
-    //     if (cell.model.type === 'code') {
-    //       const layout = cell.layout as PanelLayout;
-    //       layout.widgets[1].show(); // 1 is code part of code cell, 2 is output part
-    //     }
-    //   });
-
-      panel.content.widgets.filter(cell => panel.content.isSelectedOrActive(cell)).forEach(cell => {
-        if (cell.model.type === 'code') {
-            const layout = cell.layout as PanelLayout;
-            layout.widgets[1].show();
-          }
-      });
-
-      buttonHideInput.show();
-      buttonShowInput.hide();
     };
 
-    const buttonHideInput = new ToolbarButton({
+    const toggleOutput = () => {      
+        panel.content.widgets.filter(cell => panel.content.isSelectedOrActive(cell)).forEach(cell => {
+          if (cell.model.type === 'code') {
+              const codeCell = cell as CodeCell;
+              if (codeCell.outputArea.isHidden) {
+                  codeCell.outputArea.show()
+              } else {
+                codeCell.outputArea.hide()
+              };
+            }
+        });
+  
+      };
+
+      const togglePrompts = () => {      
+        panel.content.widgets.filter(cell => panel.content.isSelectedOrActive(cell)).forEach(cell => {
+          if (cell.model.type === 'code') {
+            const codeCell = cell as CodeCell;
+            let prompt = codeCell.outputArea.widgets[0] as Widget;
+            let l = prompt.layout as PanelLayout;
+            l.widgets[0].node.classList.toggle('hidden');
+            cell.promptNode.classList.toggle('hidden');
+            }
+        });
+  
+      };
+
+    const hideInputButton = new ToolbarButton({
       className: 'hcButton',
       iconClass: 'fa fa-sm fa-code fontawesome-colors',
-      onClick: hideInputCode,
+      onClick: toggleInput,
       tooltip: 'Hide Input'
     });
 
-    const buttonShowInput = new ToolbarButton({
+    const hideOutputButton = new ToolbarButton({
       className: 'hcButton',
       iconClass: 'fa fa-sm fa-file-code fontawesome-colors',
-      onClick: showInputCode,
-      tooltip: 'Show Input'
+      onClick: toggleOutput,
+      tooltip: 'Show Output'
     });
 
-    buttonShowInput.hide();
+    const hideOPromptsButton = new ToolbarButton({
+        className: 'hcButton',
+        iconClass: 'fa fa-sm fa-file-code fontawesome-colors',
+        onClick: togglePrompts,
+        tooltip: 'Show Prompts'
+      });
 
-    panel.toolbar.insertItem(11, 'hideInput', buttonHideInput);
-    panel.toolbar.insertItem(11, 'showInput', buttonShowInput);
+    panel.toolbar.insertItem(11, 'hideInput', hideInputButton);
+    panel.toolbar.insertItem(11, 'showInput', hideOutputButton);
+    panel.toolbar.insertItem(11, 'hidePrompt', hideOPromptsButton);
     console.log('Hide code JupyterLab extension is activated!');
 
     return new DisposableDelegate(() => {
-      buttonHideInput.dispose();
-      buttonShowInput.dispose();
+        hideInputButton.dispose();
+        hideOutputButton.dispose();
     });
   }
 }
