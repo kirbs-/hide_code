@@ -1,0 +1,24 @@
+# a mybinder.org-ready environment for demoing hide_code_lab
+# this environment may also be used locally on Linux/MacOS/Windows, e.g.
+#
+#   conda env update --file binder/environment.yml
+#   conda activate hide_code_lab-demo
+#
+name: hide_code_lab-demo
+
+channels:
+  - conda-forge
+
+dependencies:
+  # runtime dependencies
+  - python >=3.8,<3.9.0a0
+  - jupyterlab >=2,<3.0.0a0
+  # labextension build dependencies
+  - nodejs >=12,<13.0.0a0
+  # serverextension build dependencies
+  - jupyter-packaging >=0.4.0,<0.5.0a0
+  - pip
+  - wheel
+  
+  # additional packages for demos, may require modifying `labextensions.txt`
+  # - ipywidgets

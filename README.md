@@ -45,3 +45,4 @@ Visit the [Wiki](https://github.com/kirbs-/hide_code/wiki).
 * Python 3.4+
 
 ![hide_code-hits](https://caspersci.uk.to/cgi-bin/hits.cgi?q=hide_code&style=social&r=https://github.com/kirbs-/hide_code&l=https://caspersci.uk.to/images/tqdm.png&f=https://raw.githubusercontent.com/tqdm/tqdm/master/images/logo.gif)
+
