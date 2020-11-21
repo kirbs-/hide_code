@@ -64,7 +64,6 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
@@ -87,7 +86,13 @@ setup(
         'pdfkit', 
         'nbconvert>=5.0,<6', 
         'notebook>=5.1',
-        'traitlets<5'],
+        'traitlets<5'
+    ],
+
+    extras_require={
+        'all': ['notebook', 'hide_code_lab'],
+        'lab': ['hide_code_lab', 'jupyterla~=2.0'],
+    },
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
