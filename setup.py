@@ -32,7 +32,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.5.6',
+    version='0.6.0',
 
     description='A Jupyter notebook extension to hide code, prompts and outputs.',
     long_description=long_description,
@@ -84,9 +84,9 @@ setup(
     install_requires=[
         'jupyter', 
         'pdfkit', 
-        'nbconvert>=5.0,<6', 
-        'notebook>=5.1',
-        'traitlets<5'
+        'nbconvert>=6', 
+        'notebook>=6.0',
+        'traitlets<5.0'
     ],
 
     extras_require={

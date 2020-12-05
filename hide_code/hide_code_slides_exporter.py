@@ -14,9 +14,9 @@ class HideCodeSlidesExporter(SlidesExporter):
         return 'hide_code_slides'
 
     @property
-    def template_path(self):
+    def template_paths(self):
         """
         We want to inherit from HTML template, and have template under
         `./templates/` so append it to the search path. (see next section)
         """
-        return super(HideCodeSlidesExporter, self).template_path + [os.path.join(os.path.dirname(__file__), "Templates")]
+        return super(HideCodeSlidesExporter, self).template_paths + [os.path.join(os.path.dirname(__file__), "Templates")]

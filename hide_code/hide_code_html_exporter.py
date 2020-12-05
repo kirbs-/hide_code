@@ -19,12 +19,12 @@ class HideCodeHTMLExporter(HTMLExporter):
         return 'hide_code_full.tpl'
 
     @property
-    def template_path(self):
+    def template_paths(self):
         """
         We want to inherit from HTML template, and have template under
         `./templates/` so append it to the search path. (see next section)
         """
-        return super(HideCodeHTMLExporter, self).template_path + [os.path.join(os.path.dirname(__file__), "Templates")]
+        return super().template_paths + [os.path.join(os.path.dirname(__file__), "Templates")]
         # return [os.path.join(os.path.dirname(__file__), "Templates")]
 
     # @default('template_path')
