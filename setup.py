@@ -91,7 +91,7 @@ setup(
 
     extras_require={
         'all': ['notebook', 'hide_code_lab'],
-        'lab': ['hide_code_lab', 'jupyterla~=2.0'],
+        'lab': ['hide_code_lab', 'jupyterlab~=2.0'],
     },
 
     # If there are data files included in your packages that need to be
