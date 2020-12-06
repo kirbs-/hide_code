@@ -14,7 +14,7 @@ class HideCodeLatexPDFExporter(PDFExporter):
         self._init_preprocessors()
 
     def _template_file_default(self):
-        return 'hide_code_article'
+        return 'hide_code_article.tplx'
 
     @property
     def template_path(self):

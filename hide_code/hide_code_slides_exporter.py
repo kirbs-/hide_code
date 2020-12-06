@@ -11,7 +11,7 @@ class HideCodeSlidesExporter(SlidesExporter):
         self._init_preprocessors()
 
     def _template_file_default(self):
-        return 'hide_code_slides'
+        return 'hide_code_slides.tpl'
 
     @property
     def template_paths(self):
