@@ -84,7 +84,7 @@ setup(
     install_requires=[
         'jupyter', 
         'pdfkit', 
-        'nbconvert>=6', 
+        'nbconvert<6', 
         'notebook>=6.0',
         'traitlets<5.0'
     ],
