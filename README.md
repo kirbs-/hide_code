@@ -6,11 +6,15 @@ hide_code is a Jupyter notebook extension to selectively hide code, prompts and 
 
 ![demo](/images/demo.gif)
 
-## Installation
+## Jupyter Notebook Installation
 1. `pip install hide_code`
 2. `jupyter nbextension install --py hide_code`
 3. `jupyter nbextension enable --py hide_code`
 4. `jupyter serverextension enable --py hide_code`
+
+## Jupyter Lab Installation
+1. `pip instal hide_code[lab]`
+2. `jupyter lab build`
 
 ## Upgrading with nbextension
 1. `pip install hide_code --upgrade`
@@ -18,20 +22,15 @@ hide_code is a Jupyter notebook extension to selectively hide code, prompts and 
 
 Note: add `--sys-prefix` to `jupyter nbextension` to install into virtualenv or conda environment.
 
-## New in 0.5.3, 0.5.5 and 0.5.6
+## Changes in 0.6.0
 #### Improvements
+* Added experiemental Jupyter Lab support. See [Lab usage](https://github.com/kirbs-/hide_code/wiki/Lab%20Usage) for details and limitations.
 * Added Binder demo [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/kirbs-/hide_code/master?filepath=demo.ipynb)
 * Simplified extension installation. No longer need to use nbextension/serverextension commands after pip install.
-* No longer supporting Python 2.7 or . Install hide_code==0.5.2 for Python 2.7.
-* 0.5.6 is the last version to support Python versions below 3.7.
+* No longer supporting Python 2.7. Install hide_code==0.5.2 for Python 2.7.
+* 0.5.6 is the last version to support Python 3.6 and older.
+* Added extras_install [all] to install hide_code and all dependencies. Use `pip install hide_code[all]` to install. Resolves #85. 
 
-#### Bug Fixes
-* Fixed latexpdf exporting.
-* Changed nbconvert --to hide_code_pdf to use pdfkit.
-* Fixed issue exporting notebooks after renaming a notebook.
-* Resolved issue exporting notebooks with spaces in notebook name.
-* Updated reading file to always use utf-8 encoding. This should resolve non-latin character issues.
-* Renamed license file.
 
 
 
@@ -39,9 +38,10 @@ Note: add `--sys-prefix` to `jupyter nbextension` to install into virtualenv or 
 Visit the [Wiki](https://github.com/kirbs-/hide_code/wiki).
 
 ## Requirements
-* Jupyter notebook ~>5.1
-* Jupyter nbconvert ~>5.0.
+* Jupyter notebook ~>6.1
+* Jupyter nbconvert ~5.x
 * pdfkit & [wkhtmltopdf](http://wkhtmltopdf.org/)
-* Python 3.4+
+* Python 3.7+
 
 ![hide_code-hits](https://caspersci.uk.to/cgi-bin/hits.cgi?q=hide_code&style=social&r=https://github.com/kirbs-/hide_code&l=https://caspersci.uk.to/images/tqdm.png&f=https://raw.githubusercontent.com/tqdm/tqdm/master/images/logo.gif)
+
