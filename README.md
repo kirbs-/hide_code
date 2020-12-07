@@ -22,16 +22,13 @@ hide_code is a Jupyter notebook extension to selectively hide code, prompts and 
 
 Note: add `--sys-prefix` to `jupyter nbextension` to install into virtualenv or conda environment.
 
-## New in 0.6.0
+## Changes in 0.6.0
 #### Improvements
 * Added experiemental Jupyter Lab support. See [Lab usage](https://github.com/kirbs-/hide_code/wiki/Lab%20Usage) for details and limitations.
 * Added Binder demo [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/kirbs-/hide_code/master?filepath=demo.ipynb)
 * Simplified extension installation. No longer need to use nbextension/serverextension commands after pip install.
-* No longer supporting Python 2.7 or . Install hide_code==0.5.2 for Python 2.7.
+* No longer supporting Python 2.7. Install hide_code==0.5.2 for Python 2.7.
 * 0.5.6 is the last version to support Python 3.6 and older.
-
-#### Bug Fixes
-* Support for nbconvert 6.x and notebook 6.x
 * Added extras_install [all] to install hide_code and all dependencies. Use `pip install hide_code[all]` to install. Resolves #85. 
 
 
@@ -42,7 +39,7 @@ Visit the [Wiki](https://github.com/kirbs-/hide_code/wiki).
 
 ## Requirements
 * Jupyter notebook ~>6.1
-* Jupyter nbconvert ~>6.0.
+* Jupyter nbconvert ~5.x
 * pdfkit & [wkhtmltopdf](http://wkhtmltopdf.org/)
 * Python 3.7+
 
