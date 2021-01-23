@@ -13,7 +13,7 @@ hide_code is a Jupyter notebook extension to selectively hide code, prompts and 
 4. `jupyter serverextension enable --py hide_code`
 
 ## Jupyter Lab Installation
-1. `pip instal hide_code[lab]`
+1. `pip install hide_code[lab]`
 2. `jupyter lab build`
 
 ## Upgrading with nbextension
