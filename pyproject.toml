@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "hide_code"
+version = "0.7.0"
+description = "hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and output. Make a notebook a code free document for exporting or presenting. Documentation at https://github.com/kirbs-/hide_code"
+authors = ["Chris Kirby <kirbycm@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+jupyter = "^1.0.0"
+pdfkit = "^1.0.0"
+notebook = "^6.4.12"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.plugins."nbconvert.exporters"]
+"hide_code_html" = "hide_code:HideCodeHTMLExporter"
+"hide_code_pdf" = "hide_code:HideCodePDFExporter"
+"hide_code_latexpdf" = "hide_code:HideCodeLatexPDFExporter"
+"hide_code_latex" = "hide_code:HideCodeLatexExporter"
+"hide_code_slides" = "hide_code:HideCodeSlidesExporter"
