@@ -16,3 +16,4 @@ hide_code.sublime-workspace
 *.html s
 .vscode
 .ipynb_checkpoints
+.python-version
