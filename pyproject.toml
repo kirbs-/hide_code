@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hide_code"
 version = "0.7.0"
-description = "hide_code is an extension for Jupyter/IPython notebooks to selectively hide code, prompts and output. Make a notebook a code free document for exporting or presenting. Documentation at https://github.com/kirbs-/hide_code"
+description = "A Jupyter notebook extension to hide code, prompts and outputs."
 authors = ["Chris Kirby <kirbycm@gmail.com>"]
 
 [tool.poetry.dependencies]
