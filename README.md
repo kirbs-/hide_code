@@ -38,8 +38,8 @@ Note: add `--sys-prefix` to `jupyter nbextension` to install into virtualenv or 
 Visit the [Wiki](https://github.com/kirbs-/hide_code/wiki).
 
 ## Requirements
-* Jupyter notebook ~>6.1
-* Jupyter nbconvert ~5.x
+* Jupyter notebook >6.0
+* Jupyter nbconvert >6.x
 * pdfkit & [wkhtmltopdf](http://wkhtmltopdf.org/)
 * Python 3.7+
 
