@@ -3,7 +3,7 @@ name = "hide_code"
 version = "0.7.0"
 description = "A Jupyter notebook extension to hide code, prompts and outputs."
 authors = ["Chris Kirby <kirbycm@gmail.com>"]
-readme = README.md
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
